@@ -39,31 +39,11 @@ public class Duke {
             // Exit Condition, sets exitFlag to true
             if(testCondition.equals("bye")){
                 exitFlag = true;
-                echoStatement = "____________________________________________________________\n"
-                        + " Bye. Hope to see you again soon!\n"
-                        + "____________________________________________________________\n";
+                echoStatement = printByeMessage();
             }
             // Condition to printout the List of tasks
             else if (testCondition.equals("list")){
-                // This object acts as a buffer to build strings: they are based on mutable character arrays
-                // This to reduce the cost of growing the string
-                StringBuilder sb = new StringBuilder();
-                for ( int i =0;i<list.length;i++){
-                    //Suppose if list is null, break and exit generating the printout
-                    if (list[i] == null) break;
-                        // No concatenation
-                    else{
-                        int printOut = i+1;
-                        sb.append(printOut);
-                        sb.append(". ");
-                        sb.append("[");
-                        sb.append(list[i].getStatusIcon());
-                        sb.append("] ");
-                        sb.append(list[i].description);
-                        sb.append("\n");
-                    }
-                }
-                echoStatement = sb.toString();
+                echoStatement = printFullList(list);
             }
             // Condition to mark task as completed
             else if(testCondition.contains("done")){
@@ -86,5 +66,37 @@ public class Duke {
             System.out.println(echoStatement);
         }
 
+    }
+
+    private static String printByeMessage() {
+        String toPrint;
+        toPrint = "____________________________________________________________\n"
+                + " Bye. Hope to see you again soon!\n"
+                + "____________________________________________________________\n";
+        return toPrint;
+    }
+
+    private static String printFullList(Task[] list) {
+        String echoStatement;
+        // This object acts as a buffer to build strings: they are based on mutable character arrays
+        // This to reduce the cost of growing the string
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i< list.length; i++){
+            //Suppose if list is null, break and exit generating the printout
+            if (list[i] == null) break;
+                // No concatenation
+            else{
+                int printOut = i+1;
+                sb.append(printOut);
+                sb.append(". ");
+                sb.append("[");
+                sb.append(list[i].getStatusIcon());
+                sb.append("] ");
+                sb.append(list[i].description);
+                sb.append("\n");
+            }
+        }
+        echoStatement = sb.toString();
+        return echoStatement;
     }
 }
