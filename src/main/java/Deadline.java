@@ -3,8 +3,9 @@ public class Deadline extends Task{
     protected String deadline;
     protected final String TASK_TYPE = "[D]";
 
-    public Deadline(String description) {
+    public Deadline(String description, String deadline) {
         super(description);
+        setDeadline(deadline);
     }
     public String getTaskType(){
         return this.TASK_TYPE;

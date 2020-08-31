@@ -13,20 +13,21 @@ public class Duke {
             Scanner in = new Scanner(System.in);
             String line = in.nextLine();
             // In case user adds an extra space
-            String testCondition = line.replace(" ", "");
-            // Exit Condition, sets exitFlag to true
+            String testCondition = line.replaceAll(" ","");
+            System.out.println("testing: "+testCondition);
             if (testCondition.equals("bye")) {
                 exitFlag = true;
                 printByeMessage();
-            } else {
-                String echoStatement;
+            }
+            else {
+                String printStatement;
                 // Condition to printout the List of tasks
                 if (testCondition.equals("list")) {
-                    echoStatement = printFullList(list, index);
+                    printStatement = printFullList(list,index);
                 }
                 // Condition to mark task as completed
                 else if (testCondition.contains("done")) {
-                    echoStatement = markTaskAsDone(list, line);
+                    printStatement = markTaskAsDone(list, line);
                 }
                 // Echo condition, exitFlag remains the same
                 else {
@@ -34,28 +35,27 @@ public class Duke {
                         line = line.replace("todo", "");
                         ToDo td = new ToDo(line);
                         list[index] = td;
-                        echoStatement = printTaskDescription(index, list);
+                        printStatement = printTaskDescription(index, list);
                     } else if (line.contains("deadline")) {
                         String deadlineDescription = line.replace("deadline", "");
                         deadlineDescription = deadlineDescription.substring(0, deadlineDescription.lastIndexOf("/by"));
-                        Deadline d = new Deadline(deadlineDescription);
-                        d.setDeadline(line.substring(line.lastIndexOf("/")));
+                        String date = line.substring(line.lastIndexOf("/"));
+                        Deadline d = new Deadline(deadlineDescription,date);
                         list[index] = d;
-                        echoStatement = printTaskDescription(index, list);
+                        printStatement = printTaskDescription(index, list);
 
                     } else {
                         String eventDescription = line.replace("event", "");
                         eventDescription = eventDescription.substring(0, eventDescription.lastIndexOf("/at"));
-                        Event e = new Event(eventDescription);
+                        String date = line.substring(line.lastIndexOf("/"));
+                        Event e = new Event(eventDescription,date);
                         list[index] = e;
-                        echoStatement = printTaskDescription(index, list);
+                        printStatement = printTaskDescription(index, list);
                     }
                     index++;
                 }
-                System.out.println(echoStatement);
-
+                System.out.println(printStatement);
             }
-
         }
     }
 
@@ -94,7 +94,7 @@ public class Duke {
     }
 
     private static String printFullList(Task[] list, int index) {
-        String echoStatement;
+        String printStatement;
         // This object acts as a buffer to build strings: they are based on mutable character arrays
         // This to reduce the cost of growing the string
         StringBuilder sb = new StringBuilder();
@@ -108,7 +108,7 @@ public class Duke {
             sb.append("\n");
         }
         sb.append("____________________________________________________________\n");
-        echoStatement = sb.toString();
-        return echoStatement;
+        printStatement = sb.toString();
+        return printStatement;
     }
 }

@@ -2,15 +2,16 @@ public class Event extends Task {
     protected String eventTime;
     protected final String TASK_TYPE = "[E]";
 
-    public Event(String description) {
+    public Event(String description, String date) {
         super(description);
+        setDate(date);
     }
 
     public String getTaskType() {
         return this.TASK_TYPE;
     }
 
-    public void setDeadline(String eventTime) {
+    public void setDate(String eventTime) {
         eventTime = eventTime.replace("/at", " (at:");
         eventTime += ")";
         this.eventTime = eventTime;
