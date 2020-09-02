@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.Arrays;
 
 public class Duke {
     public static void main(String[] args) {
@@ -10,63 +9,87 @@ public class Duke {
         Task[] list = new Task[100];
         printWelcomeMessage();
         while (!exitFlag) {
+            // Read User input
             Scanner in = new Scanner(System.in);
             String line = in.nextLine();
-            // In case user adds an extra space
-            String testCondition = line.replaceAll(" ","");
-//            System.out.println("testing: "+testCondition);
-            if (testCondition.equals("bye")) {
-                exitFlag = true;
-                printByeMessage();
-            }
-            else {
-                String printStatement;
-                // Condition to printout the List of tasks
-                if (testCondition.equals("list")) {
-                    printStatement = printFullList(list,index);
-                }
-                // Condition to mark task as completed
-                else if (testCondition.contains("done")) {
-                    printStatement = markTaskAsDone(list, line);
-                }
-                // add task condition, exitFlag remains the same
-                else {
-                    if (line.contains("todo")) {
-                        // remove todo indicator
-                        line = line.replace("todo", "");
-                        ToDo task = new ToDo(line);
-                        list[index] = task;
-                    } else if (line.contains("deadline")) {
-                        String deadlineDescription = extractDescriptionFromString("deadline",line);
-                        String date = extractDateFromString(line);
-                        Deadline task = new Deadline(deadlineDescription,date);
-                        list[index] = task;
-                    } else if (line.contains("event")) {
-                        String eventDescription = extractDescriptionFromString("event",line);
-                        String date = extractDateFromString(line);
-                        Event task = new Event(eventDescription,date);
-                        list[index] = task;
-                    } else {
-                        // when user inputs something unrecognisable
-                        continue;
-                    }
+            // process user input and decide what operation to use
+            String operation = extractOperationType(line);
+            String printStatement = null;
+
+            switch (operation){
+                case "bye":
+                    exitFlag = true;
+                    printStatement = printByeMessage();
+                    break;
+
+                case "list":
+                    printStatement = printFullList(list, index);
+                    index--;
+                    break;
+
+                case "done":
+                    markTaskAsDone(list,line);
+                    index--;
+                    break;
+
+                case "todo":
+                    String toDoDescription = extractDescriptionFromString("todo",line);
+                    ToDo t = new ToDo(toDoDescription);
+                    list[index] = t;
                     printStatement = printTaskDescription(index, list);
-                    index++;
-                }
-                System.out.println(printStatement);
+                    break;
+
+                case "deadline":
+                    String deadlineDescription = extractDescriptionFromString("deadline", line);
+                    String date = extractDateFromString(line);
+                    Deadline d = new Deadline(deadlineDescription, date);
+                    list[index] = d;
+                    printStatement = printTaskDescription(index, list);
+                    break;
+
+                case "event":
+                    String eventDescription = extractDescriptionFromString("event", line);
+                    String eventDate = extractDateFromString(line);
+                    Event e = new Event(eventDescription, eventDate);
+                    list[index] = e;
+                    printStatement = printTaskDescription(index, list);
+                    break;
+
+                default:
+                    index--;
+                    break;
             }
+            System.out.println(printStatement);
+            index++;
         }
     }
+
+    // This function extracts the operation type from the user input's String
+    private static String extractOperationType(String userInput){
+        userInput = userInput.trim();
+        String [] operation = userInput.split(" ");
+        return operation[0];
+
+    }
+
     // This function removes the task type and extracts the description of the task
     private static String extractDescriptionFromString(String type, String userInput){
-        String deadlineDescription = userInput.replace(type, "");
-        return deadlineDescription.substring(0, deadlineDescription.lastIndexOf("/"));
+        String description;
+        if (type.equals("todo")){
+            description = userInput.replace(type, "");
+        } else{
+            description = userInput.replace(type, "");
+            description = description.substring(0, description.lastIndexOf("/"));
+        }
+        return description;
     }
+
     // This function extracts the date from the user input
     private static String extractDateFromString(String userInput){
         return userInput.substring(userInput.lastIndexOf("/"));
     }
 
+    // This function constructs the printout of the newly added task
     private static String printTaskDescription(int index,  Task[] list){
         int numberOfTask = index+1;
         String printStatement = "____________________________________________________________\n"
@@ -77,15 +100,16 @@ public class Duke {
         return printStatement;
     }
 
-
+    // This function marks the tagged index from user input as complete and prints the statement
     private static String markTaskAsDone(Task[] list, String line) {
         int selectedIndex = Integer.parseInt(line.split(" ")[1])-1;
         list[selectedIndex].markAsDone();
-        String printStatement = "Nice! I've marked this task as done: \n"
+        return "Nice! I've marked this task as done: \n"
                 + list[selectedIndex] + "\n"
                 + "____________________________________________________________\n";
-        return printStatement;
     }
+
+    // This function prints the program's welcome message
     private static void printWelcomeMessage(){
         String toPrint = "____________________________________________________________\n"
                 + " Hello! I'm Duke\n"
@@ -93,14 +117,15 @@ public class Duke {
                 + "____________________________________________________________\n";
         System.out.println(toPrint);
     }
-    private static void printByeMessage() {
-        String toPrint;
-        toPrint = "____________________________________________________________\n"
+
+    // This function prints the program's goodbye message
+    private static String printByeMessage() {
+        return "____________________________________________________________\n"
                 + " Bye. Hope to see you again soon!\n"
                 + "____________________________________________________________\n";
-        System.out.println(toPrint);
     }
 
+    // This function prints the full list of Tasks
     private static String printFullList(Task[] list, int index) {
         String printStatement;
         // This object acts as a buffer to build strings: they are based on mutable character arrays
