@@ -46,11 +46,11 @@ public class Duke {
                         list[listIndex] = t;
                         printStatement = printTaskDescription(listIndex, list);
                         
-                    } catch (EmptyDescription e) {
+                    } catch (IllegalDescription e) {
                         printEmptyDescription();
                         continue;
 
-                    } catch (EmptyDate e) {
+                    } catch (IllegalDate e) {
                         printEmptyDate();
                         continue;
                     }
@@ -64,11 +64,11 @@ public class Duke {
                         list[listIndex] = d;
                         printStatement = printTaskDescription(listIndex, list);
 
-                    } catch (EmptyDescription e) {
+                    } catch (IllegalDescription e) {
                         printEmptyDescription();
                         continue;
 
-                    } catch (EmptyDate e) {
+                    } catch (IllegalDate e) {
                         printEmptyDate();
                         continue;
                     }
@@ -83,11 +83,11 @@ public class Duke {
                         list[listIndex] = e;
                         printStatement = printTaskDescription(listIndex, list);
 
-                    } catch ( EmptyDescription e) {
+                    } catch ( IllegalDescription e) {
                         printEmptyDescription();
                         continue;
 
-                    } catch ( EmptyDate e) {
+                    } catch ( IllegalDate e) {
                         printEmptyDate();
                         continue;
                     }
@@ -112,30 +112,30 @@ public class Duke {
     }
 
     // This function removes the task type and extracts the description of the task
-    private static String extractDescriptionFromString(String type, String userInput) throws EmptyDescription,EmptyDate{
+    private static String extractDescriptionFromString(String type, String userInput) throws IllegalDescription, IllegalDate {
         String description;
         try {
             if (type.equals("todo")){
                 description = userInput.replace(type, "");
-                if (description.contains("/")) throw new EmptyDate();
+                if (description.contains("/")) throw new IllegalDate();
             } else{
                 description = userInput.replace(type, "");
                 description = description.substring(0, description.lastIndexOf("/"));
             }
-            if (description.replace(" ","").isEmpty()) throw new EmptyDescription();
+            if (description.replace(" ","").isEmpty()) throw new IllegalDescription();
         } catch ( StringIndexOutOfBoundsException e ) {
-            throw new EmptyDate();
+            throw new IllegalDate();
         }
 
         return description;
     }
 
     // This function extracts the date from the user input
-    private static String extractDateFromString(String userInput) throws EmptyDate{
+    private static String extractDateFromString(String userInput) throws IllegalDate {
         String date = userInput.substring(userInput.lastIndexOf("/"));
-        if (date.isEmpty()) throw new EmptyDate();
+        if (date.isEmpty()) throw new IllegalDate();
         else if (date.contains("/by") == date.contains(("/at"))) {
-            throw new EmptyDate();
+            throw new IllegalDate();
         }
         return date;
 

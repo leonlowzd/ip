@@ -1,12 +1,12 @@
 
 public class Deadline extends Task{
-    protected String deadline;
+    protected String date;
     protected final String TASK_TYPE = "[D]";
 
-    public Deadline(String description, String deadline) throws EmptyDate {
+    public Deadline(String description, String date) throws IllegalDate {
         super(description);
-        if(deadline.contains("/by")) setDeadline(deadline);
-        else throw new EmptyDate();
+        if(date.contains("/by")) setDate(date);
+        else throw new IllegalDate();
 
 
     }
@@ -14,17 +14,15 @@ public class Deadline extends Task{
         return this.TASK_TYPE;
     }
 
-    public void setDeadline(String deadline){
-        deadline = deadline.replace("/by"," (by:");
-        deadline += ")";
-        this.deadline = deadline;
+    public void setDate(String date){
+        date = date.replace("/by"," (by:");
+        date += ")";
+        this.date = date;
 
     }
     @Override
     public String toString(){
         return getTaskType() + super.toString() + getDate();
     }
-    public String getDate(){
-        return this.deadline;
-    }
+    public String getDate(){ return this.date; }
 }

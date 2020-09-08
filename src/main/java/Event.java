@@ -1,23 +1,24 @@
 public class Event extends Task {
-    protected String eventTime;
+    protected String date;
     protected final String TASK_TYPE = "[E]";
 
-    public Event(String description, String date) {
+    public Event(String description, String date) throws IllegalDate {
         super(description);
-        setDate(date);
+        if(date.contains("/at")) setDate(date);
+        else throw new IllegalDate();
     }
 
     public String getTaskType() {
         return this.TASK_TYPE;
     }
 
-    public void setDate(String eventTime) {
-        eventTime = eventTime.replace("/at", " (at:");
-        eventTime += ")";
-        this.eventTime = eventTime;
+    public void setDate(String date) {
+        date = date.replace("/at", " (at:");
+        date += ")";
+        this.date = date;
     }
     public String getDate(){
-        return this.eventTime;
+        return this.date;
     }
     public String toString() {
         return getTaskType() + super.toString() + getDate();
