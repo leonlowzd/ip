@@ -3,110 +3,193 @@ import java.util.Scanner;
 public class Duke {
     public static void main(String[] args) {
 
-        boolean exitFlag = false;
-        int index = 0;
+        boolean hasExit = false;
+        int listIndex = 0;
         // Problem will come if there are more than 100 tasks
         Task[] list = new Task[100];
         printWelcomeMessage();
-        while (!exitFlag) {
+        while (!hasExit) {
             // Read User input
             Scanner in = new Scanner(System.in);
             String line = in.nextLine();
+
             // process user input and decide what operation to use
             String operation = extractOperationType(line);
-            String printStatement = null;
+            String printStatement;
 
             switch (operation){
                 case "bye":
-                    exitFlag = true;
+                    hasExit = true;
                     printStatement = printByeMessage();
                     break;
 
                 case "list":
-                    printStatement = printFullList(list, index);
-                    index--;
+                    printStatement = printFullList(list, listIndex);
+                    listIndex--;
                     break;
 
                 case "done":
-                    markTaskAsDone(list,line);
-                    index--;
+                    try {
+                        printStatement = markTaskAsDone(list,line);
+                    } catch ( IllegalIndex e) {
+                        returnIllegalIndexStatement();
+                        continue;
+                    }
+
+                    listIndex--;
                     break;
 
                 case "todo":
-                    String toDoDescription = extractDescriptionFromString("todo",line);
-                    ToDo t = new ToDo(toDoDescription);
-                    list[index] = t;
-                    printStatement = printTaskDescription(index, list);
+                    try {
+                        String toDoDescription = extractDescriptionFromString("todo",line);
+                        ToDo t = new ToDo(toDoDescription);
+                        list[listIndex] = t;
+                        printStatement = printTaskDescription(listIndex, list);
+                        
+                    } catch (EmptyDescription e) {
+                        printEmptyDescription();
+                        continue;
+
+                    } catch (EmptyDate e) {
+                        printEmptyDate();
+                        continue;
+                    }
                     break;
 
                 case "deadline":
-                    String deadlineDescription = extractDescriptionFromString("deadline", line);
-                    String date = extractDateFromString(line);
-                    Deadline d = new Deadline(deadlineDescription, date);
-                    list[index] = d;
-                    printStatement = printTaskDescription(index, list);
+                    try {
+                        String deadlineDescription = extractDescriptionFromString("deadline", line);
+                        String date = extractDateFromString(line);
+                        Deadline d = new Deadline(deadlineDescription, date);
+                        list[listIndex] = d;
+                        printStatement = printTaskDescription(listIndex, list);
+
+                    } catch (EmptyDescription e) {
+                        printEmptyDescription();
+                        continue;
+
+                    } catch (EmptyDate e) {
+                        printEmptyDate();
+                        continue;
+                    }
+
                     break;
 
                 case "event":
-                    String eventDescription = extractDescriptionFromString("event", line);
-                    String eventDate = extractDateFromString(line);
-                    Event e = new Event(eventDescription, eventDate);
-                    list[index] = e;
-                    printStatement = printTaskDescription(index, list);
+                    try {
+                        String eventDescription = extractDescriptionFromString("event", line);
+                        String eventDate = extractDateFromString(line);
+                        Event e = new Event(eventDescription, eventDate);
+                        list[listIndex] = e;
+                        printStatement = printTaskDescription(listIndex, list);
+
+                    } catch ( EmptyDescription e) {
+                        printEmptyDescription();
+                        continue;
+
+                    } catch ( EmptyDate e) {
+                        printEmptyDate();
+                        continue;
+                    }
+
                     break;
 
                 default:
-                    index--;
-                    break;
+                    printUnknownMessage();
+                    continue;
+
             }
             System.out.println(printStatement);
-            index++;
+            listIndex++;
         }
     }
 
     // This function extracts the operation type from the user input's String
-    private static String extractOperationType(String userInput){
+    private static String extractOperationType(String userInput) {
         userInput = userInput.trim();
         String [] operation = userInput.split(" ");
         return operation[0];
-
     }
 
     // This function removes the task type and extracts the description of the task
-    private static String extractDescriptionFromString(String type, String userInput){
+    private static String extractDescriptionFromString(String type, String userInput) throws EmptyDescription,EmptyDate{
         String description;
-        if (type.equals("todo")){
-            description = userInput.replace(type, "");
-        } else{
-            description = userInput.replace(type, "");
-            description = description.substring(0, description.lastIndexOf("/"));
+        try {
+            if (type.equals("todo")){
+                description = userInput.replace(type, "");
+                if (description.contains("/")) throw new EmptyDate();
+            } else{
+                description = userInput.replace(type, "");
+                description = description.substring(0, description.lastIndexOf("/"));
+            }
+            if (description.replace(" ","").isEmpty()) throw new EmptyDescription();
+        } catch ( StringIndexOutOfBoundsException e ) {
+            throw new EmptyDate();
         }
+
         return description;
     }
 
     // This function extracts the date from the user input
-    private static String extractDateFromString(String userInput){
-        return userInput.substring(userInput.lastIndexOf("/"));
+    private static String extractDateFromString(String userInput) throws EmptyDate{
+        String date = userInput.substring(userInput.lastIndexOf("/"));
+        if (date.isEmpty()) throw new EmptyDate();
+        else if (date.contains("/by") == date.contains(("/at"))) {
+            throw new EmptyDate();
+        }
+        return date;
+
+    }
+
+    private static void printUnknownMessage () {
+        System.out.println("____________________________________________________________\n"+
+                "☹ OOPS!!! I'm sorry, but I don't know what that means :-(\n"+
+                "____________________________________________________________\n");
+    }
+
+    private static void returnIllegalIndexStatement () {
+        System.out.println("____________________________________________________________\n" +
+                "☹ OOPS!!! Illegal index, it does not exist in the list\n" +
+                "____________________________________________________________\n");
+    }
+    //print out empty date function
+    private static void printEmptyDate () {
+        System.out.println("____________________________________________________________\n" +
+                "☹ OOPS!!! Invalid Date input.\n" +
+                "____________________________________________________________\n");
+    }
+    // print out empty disc function
+    private static void printEmptyDescription () {
+        System.out.println("____________________________________________________________\n" +
+                "☹ OOPS!!! The Description cannot be empty.\n" +
+                "____________________________________________________________\n");
     }
 
     // This function constructs the printout of the newly added task
     private static String printTaskDescription(int index,  Task[] list){
         int numberOfTask = index+1;
-        String printStatement = "____________________________________________________________\n"
+        return "____________________________________________________________\n"
                 + "Got it. I've added this task:\n"
                 + "     " + list[index] + "\n"
                 + "Now you have "+numberOfTask+" in the list.\n"
                 + "____________________________________________________________\n";
-        return printStatement;
     }
 
     // This function marks the tagged index from user input as complete and prints the statement
-    private static String markTaskAsDone(Task[] list, String line) {
-        int selectedIndex = Integer.parseInt(line.split(" ")[1])-1;
-        list[selectedIndex].markAsDone();
-        return "Nice! I've marked this task as done: \n"
-                + list[selectedIndex] + "\n"
-                + "____________________________________________________________\n";
+    private static String markTaskAsDone (Task[] list, String line) throws IllegalIndex  {
+        String statement;
+        try {
+            int selectedIndex = Integer.parseInt(line.split(" ")[1]) - 1;
+            list[selectedIndex].markAsDone();
+             statement = "____________________________________________________________\n"
+                    +"Nice! I've marked this task as done: \n"
+                    + list[selectedIndex] + "\n"
+                    + "____________________________________________________________\n";
+
+        } catch (RuntimeException e) {
+            throw new IllegalIndex();
+        }
+        return statement;
     }
 
     // This function prints the program's welcome message

@@ -3,9 +3,12 @@ public class Deadline extends Task{
     protected String deadline;
     protected final String TASK_TYPE = "[D]";
 
-    public Deadline(String description, String deadline) {
+    public Deadline(String description, String deadline) throws EmptyDate {
         super(description);
-        setDeadline(deadline);
+        if(deadline.contains("/by")) setDeadline(deadline);
+        else throw new EmptyDate();
+
+
     }
     public String getTaskType(){
         return this.TASK_TYPE;
@@ -15,6 +18,7 @@ public class Deadline extends Task{
         deadline = deadline.replace("/by"," (by:");
         deadline += ")";
         this.deadline = deadline;
+
     }
     @Override
     public String toString(){
