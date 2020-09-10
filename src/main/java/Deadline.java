@@ -5,9 +5,11 @@ public class Deadline extends Task{
 
     public Deadline(String description, String date) throws IllegalDate {
         super(description);
-        if(date.contains("/by")) setDate(date);
+        if(date.contains("/by")) {
+            if (date.replace("/by","").trim().isEmpty()) throw new IllegalDate();
+            setDate(date);
+        }
         else throw new IllegalDate();
-
 
     }
     public String getTaskType(){

@@ -4,7 +4,10 @@ public class Event extends Task {
 
     public Event(String description, String date) throws IllegalDate {
         super(description);
-        if(date.contains("/at")) setDate(date);
+        if(date.contains("/at")){
+            if (date.replace("/at","").trim().isEmpty()) throw new IllegalDate();
+            setDate(date);
+        }
         else throw new IllegalDate();
     }
 
