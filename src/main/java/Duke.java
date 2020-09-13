@@ -152,13 +152,13 @@ public class Duke {
                 "☹ OOPS!!! Illegal index, it does not exist in the list\n" +
                 "____________________________________________________________\n");
     }
-    //print out empty date function
+
     private static void printEmptyDate () {
         System.out.println("____________________________________________________________\n" +
                 "☹ OOPS!!! Invalid Date input.\n" +
                 "____________________________________________________________\n");
     }
-    // print out empty disc function
+
     private static void printEmptyDescription () {
         System.out.println("____________________________________________________________\n" +
                 "☹ OOPS!!! The Description cannot be empty.\n" +
