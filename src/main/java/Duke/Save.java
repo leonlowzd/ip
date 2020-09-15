@@ -33,6 +33,7 @@ public class Save extends Duke {
     public void readFile(String homeDirectory) {
         try {
             File file = new File(homeDirectory);
+            if(!file.exists()) return;
             Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
