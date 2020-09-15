@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 
 public class Duke {
-    private static ArrayList<Task> list = new ArrayList<>();
-    private static int numberOfTasks = 0;
+    protected static ArrayList<Task> list = new ArrayList<>();
+    protected static int numberOfTasks = 0;
     public static void main(String[] args) throws IOException {
         Save save = new Save();
         String home = System.getProperty("user.home");
@@ -30,7 +30,7 @@ public class Duke {
 
             // process user input and decide what operation to use
             String operation = extractOperationType(line);
-            String printStatement;
+            String printStatement = null;
 
             switch (operation){
                 case "bye":
@@ -59,70 +59,53 @@ public class Duke {
                     break;
 
                 case "todo":
-                    try {
-                        String toDoDescription = extractDescriptionFromString("todo",line);
-                        ToDo t = new ToDo(toDoDescription);
-                        list.add(t);
-                        printStatement = printNIncrementTask(numberOfTasks);
-
-                    } catch (IllegalDescription e) {
-                        printEmptyDescription();
-                        continue;
-
-                    } catch (IllegalDate e) {
-                        printEmptyDate();
-                        continue;
-                    }
-                    break;
-
                 case "deadline":
-                    try {
-                        String deadlineDescription = extractDescriptionFromString("deadline", line);
-                        String date = extractDateFromString(line);
-                        Deadline d = new Deadline(deadlineDescription, date);
-                        list.add(d);
-                        printStatement = printNIncrementTask(numberOfTasks);
-
-                    } catch (IllegalDescription e) {
-                        printEmptyDescription();
-                        continue;
-
-                    } catch (IllegalDate e) {
-                        printEmptyDate();
-                        continue;
-                    }
-
-                    break;
-
                 case "event":
                     try {
-                        String eventDescription = extractDescriptionFromString("event", line);
-                        String eventDate = extractDateFromString(line);
-                        Event e = new Event(eventDescription, eventDate);
-                        list.add(e);
-                        printStatement = printNIncrementTask(numberOfTasks);
-
-                    } catch ( IllegalDescription e) {
-                        printEmptyDescription();
-                        continue;
-
-                    } catch ( IllegalDate e) {
+                        if(operation.equals("todo")) printStatement = createNewTask(operation,extractDescriptionFromString(operation,line),null);
+                        else printStatement = createNewTask(operation,extractDescriptionFromString(operation,line),extractDateFromString(line));
+                    } catch (IllegalDate e) {
                         printEmptyDate();
-                        continue;
+                    } catch (IllegalDescription e){
+                        printEmptyDescription();
                     }
-
                     break;
-
                 default:
                     printUnknownMessage();
                     continue;
 
             }
             System.out.println(printStatement);
-            numberOfTasks++;
-
             save.writeFile(home+"/Documents/log.txt",printFullList(numberOfTasks));
         }
+    }
+    
+    public static String createNewTask(String taskType, String description, String date) throws IllegalDate, IllegalDescription {
+        String printStatement = null;
+        System.out.println(description);
+        if(description.isEmpty()) throw new IllegalDescription();
+        System.out.println(date);
+        switch(taskType) {
+            case "todo":
+
+                ToDo t = new ToDo(description);
+                list.add(t);
+                printStatement = printNIncrementTask(numberOfTasks);
+                break;
+
+            case "deadline":
+                Deadline d = new Deadline(description, date);
+                list.add(d);
+                printStatement = printNIncrementTask(numberOfTasks);
+                break;
+
+            case "event":
+                Event e = new Event(description, date);
+                list.add(e);
+                printStatement = printNIncrementTask(numberOfTasks);
+                break;
+        }
+        return printStatement;
     }
 
     // This function extracts the operation type from the user input's String
