@@ -31,20 +31,20 @@ public class Save extends Duke {
     }
 
     public void readFile(String homeDirectory) {
-        System.out.println("test");
         try {
-
             File file = new File(homeDirectory);
             Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 if (data.contains(toDiscard[0])||data.contains(toDiscard[1])) continue;
-                System.out.println(data);
+//                System.out.println(data);
                 String taskType = extractTaskType(data);
                 boolean status = extractDoneStatus(data);
-                String description = extractDescription(data);
+                String description = extractDescription(data,taskType);
                 String date = null;
-                if (taskType.equals("event")||taskType.equals("deadline")) date = extractDate(data);
+                if (taskType.equals("event")||taskType.equals("deadline")){
+                    date = extractDate(data,taskType);
+                }
                 Duke.createNewTask(taskType,description,date);
             }
             myReader.close();
@@ -74,13 +74,22 @@ public class Save extends Duke {
         return isDone;
     }
 
-    private static String extractDescription(String line) {
-        System.out.println(Arrays.toString(line.split(" ")));
-        return line.split(" ",3)[2].trim();
+    private static String extractDescription(String line, String type) {
+        String statement;
+        statement = line.split(" ",3)[2].trim();
+        if (type.contains("deadline")||type.contains("event")){
+            if (type.contains("deadline")) statement = statement.split("by:")[0];
+            else  statement = statement.split("at:")[0];
+            statement = statement.replace("(","");
+        }
+        return statement;
     }
-    private static String extractDate(String line) {
-        String operation = line.split(":")[1];
+    private static String extractDate(String line, String type) {
+        String operation = line.split(":")[1].trim();
+        if(type.contains("deadline")) operation = "/by "+operation;
+        else operation = "/at "+operation;
         operation = operation.replace(")","").trim();
+//        System.out.println(operation);
         return operation;
     }
 

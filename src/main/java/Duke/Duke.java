@@ -8,8 +8,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 
-
-
 public class Duke {
     protected static ArrayList<Task> list = new ArrayList<>();
     protected static int numberOfTasks = 0;
@@ -82,9 +80,7 @@ public class Duke {
     
     public static String createNewTask(String taskType, String description, String date) throws IllegalDate, IllegalDescription {
         String printStatement = null;
-        System.out.println(description);
         if(description.isEmpty()) throw new IllegalDescription();
-        System.out.println(date);
         switch(taskType) {
             case "todo":
 
@@ -184,7 +180,7 @@ public class Duke {
         try {
             int selectedIndex = Integer.parseInt(line.split(" ")[1]) - 1;
             numberOfTasks--;
-            System.out.println(selectedIndex);
+//            System.out.println(selectedIndex);
             statement = "____________________________________________________________\n"
                     + "Noted. I've removed this task:  \n"
                     + list.get(selectedIndex) +"\n"
