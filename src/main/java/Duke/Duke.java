@@ -5,6 +5,11 @@ import Duke.exceptions.IllegalDescription;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
+
 
 public class Duke {
     private static ArrayList<Task> list = new ArrayList<>();
@@ -30,7 +35,31 @@ public class Duke {
                     hasExit = true;
                     printStatement = printByeMessage();
                     break;
+                case "save":
+                    printStatement = "File have been saved to Documents.";
+                    try {
+                        String statement = printFullList(numberOfTasks);
+                        String home = System.getProperty("user.home");
+                        home = home+"/Documents/log.txt";
+                        File file = new File(home);
 
+/*                        if(!file.exists()) {
+                            file.createNewFile();
+                        }*/
+                        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                        BufferedWriter bw = new BufferedWriter(fw);
+
+                        // Write in file
+                        bw.write(statement);
+
+                        // Close connection
+                        bw.close();
+
+                    } catch ( Exception e){
+                        System.out.println("Error Saving File");
+                        continue;
+                    }
+                    break;
                 case "list":
                     printStatement = printFullList(numberOfTasks);
                     break;
