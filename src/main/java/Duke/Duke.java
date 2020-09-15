@@ -4,6 +4,11 @@ import Duke.exceptions.IllegalIndex;
 import Duke.exceptions.IllegalDescription;
 
 import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
+
 
 public class Duke {
     public static void main(String[] args) {
@@ -27,7 +32,31 @@ public class Duke {
                     hasExit = true;
                     printStatement = printByeMessage();
                     break;
+                case "save":
+                    printStatement = "File have been saved to Documents.";
+                    try {
+                        String statement = printFullList(list, listIndex);
+                        String home = System.getProperty("user.home");
+                        home = home+"/Documents/log.txt";
+                        File file = new File(home);
 
+/*                        if(!file.exists()) {
+                            file.createNewFile();
+                        }*/
+                        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                        BufferedWriter bw = new BufferedWriter(fw);
+
+                        // Write in file
+                        bw.write(statement);
+
+                        // Close connection
+                        bw.close();
+                        listIndex--;
+
+                    } catch ( Exception e){
+                        System.out.println(e);
+                    }
+                    break;
                 case "list":
                     printStatement = printFullList(list, listIndex);
                     listIndex--;
