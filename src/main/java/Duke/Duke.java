@@ -1,3 +1,8 @@
+package Duke;
+import Duke.exceptions.IllegalDate;
+import Duke.exceptions.IllegalIndex;
+import Duke.exceptions.IllegalDescription;
+
 import java.util.Scanner;
 
 public class Duke {

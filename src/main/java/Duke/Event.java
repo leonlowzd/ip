@@ -1,3 +1,6 @@
+package Duke;
+import Duke.exceptions.IllegalDate;
+
 public class Event extends Task {
     protected String date;
     protected final String TASK_TYPE = "[E]";

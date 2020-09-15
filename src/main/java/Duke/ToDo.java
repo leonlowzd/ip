@@ -1,4 +1,6 @@
-public class ToDo extends Task{
+package Duke;
+
+public class ToDo extends Task {
     protected boolean isDone;
     private String TASK_TYPE = "[T]";
 

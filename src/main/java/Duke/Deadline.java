@@ -1,5 +1,9 @@
+package Duke;
 
-public class Deadline extends Task{
+import Duke.exceptions.IllegalDate;
+
+
+public class Deadline extends Task {
     protected String date;
     protected final String TASK_TYPE = "[D]";
 
