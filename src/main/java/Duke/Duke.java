@@ -5,17 +5,23 @@ import Duke.exceptions.IllegalDescription;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.ArrayList;
+
+
+
 
 public class Duke {
+    private static ArrayList<Task> list = new ArrayList<>();
+    private static int numberOfTasks = 0;
     public static void main(String[] args) throws IOException {
         Save save = new Save();
         String home = System.getProperty("user.home");
         //Read from memory
         save.readFile(home+"/Documents/log.txt");
         boolean hasExit = false;
-        int listIndex = 0;
+
         // Problem will come if there are more than 100 tasks
-        Task[] list = new Task[100];
+//        Task[] list = new Task[100];
         printWelcomeMessage();
         while (!hasExit) {
             // Read User input
@@ -32,28 +38,33 @@ public class Duke {
                     printStatement = printByeMessage();
                     break;
                 case "list":
-                    printStatement = printFullList(list, listIndex);
-                    listIndex--;
+                    printStatement = printFullList(numberOfTasks);
                     break;
 
                 case "done":
                     try {
-                        printStatement = markTaskAsDone(list,line);
+                        printStatement = markTaskAsDone(line);
                     } catch ( IllegalIndex e) {
                         returnIllegalIndexStatement();
                         continue;
                     }
-
-                    listIndex--;
+                    break;
+                case "delete":
+                    try {
+                        printStatement = deleteTask(line);
+                    } catch ( IllegalIndex e) {
+                        returnIllegalIndexStatement();
+                        continue;
+                    }
                     break;
 
                 case "todo":
                     try {
                         String toDoDescription = extractDescriptionFromString("todo",line);
                         ToDo t = new ToDo(toDoDescription);
-                        list[listIndex] = t;
-                        printStatement = printTaskDescription(listIndex, list);
-                        
+                        list.add(t);
+                        printStatement = printNIncrementTask(numberOfTasks);
+
                     } catch (IllegalDescription e) {
                         printEmptyDescription();
                         continue;
@@ -69,8 +80,8 @@ public class Duke {
                         String deadlineDescription = extractDescriptionFromString("deadline", line);
                         String date = extractDateFromString(line);
                         Deadline d = new Deadline(deadlineDescription, date);
-                        list[listIndex] = d;
-                        printStatement = printTaskDescription(listIndex, list);
+                        list.add(d);
+                        printStatement = printNIncrementTask(numberOfTasks);
 
                     } catch (IllegalDescription e) {
                         printEmptyDescription();
@@ -88,8 +99,8 @@ public class Duke {
                         String eventDescription = extractDescriptionFromString("event", line);
                         String eventDate = extractDateFromString(line);
                         Event e = new Event(eventDescription, eventDate);
-                        list[listIndex] = e;
-                        printStatement = printTaskDescription(listIndex, list);
+                        list.add(e);
+                        printStatement = printNIncrementTask(numberOfTasks);
 
                     } catch ( IllegalDescription e) {
                         printEmptyDescription();
@@ -108,9 +119,9 @@ public class Duke {
 
             }
             System.out.println(printStatement);
-            listIndex++;
+            numberOfTasks++;
 
-            save.writeFile(home+"/Documents/log.txt",printFullList(list, listIndex));
+            save.writeFile(home+"/Documents/log.txt",printFullList(numberOfTasks));
         }
     }
 
@@ -176,24 +187,44 @@ public class Duke {
     }
 
     // This function constructs the printout of the newly added task
-    private static String printTaskDescription(int index,  Task[] list){
-        int numberOfTask = index+1;
+    private static String printNIncrementTask(int index){
+        numberOfTasks++;
         return "____________________________________________________________\n"
                 + "Got it. I've added this task:\n"
-                + "     " + list[index] + "\n"
-                + "Now you have "+numberOfTask+" in the list.\n"
+                + "     " + list.get(index) + "\n"
+                + "Now you have "+numberOfTasks+" in the list.\n"
                 + "____________________________________________________________\n";
     }
-
-    // This function marks the tagged index from user input as complete and prints the statement
-    private static String markTaskAsDone (Task[] list, String line) throws IllegalIndex  {
+    // This function selects the tagged index from user input and deletes it from the list
+    private static String deleteTask (String line) throws IllegalIndex {
         String statement;
         try {
             int selectedIndex = Integer.parseInt(line.split(" ")[1]) - 1;
-            list[selectedIndex].markAsDone();
-             statement = "____________________________________________________________\n"
+            numberOfTasks--;
+            System.out.println(selectedIndex);
+            statement = "____________________________________________________________\n"
+                    + "Noted. I've removed this task:  \n"
+                    + list.get(selectedIndex) +"\n"
+                    + "Now you have "+numberOfTasks+" in the list.\n"
+                    + "____________________________________________________________\n";
+            list.remove(list.get(selectedIndex));
+        } catch (RuntimeException e) {
+            numberOfTasks++;
+            throw new IllegalIndex();
+        }
+        return statement;
+    }
+
+
+    // This function marks the tagged index from user input as complete and prints the statement
+    private static String markTaskAsDone (String line) throws IllegalIndex  {
+        String statement;
+        try {
+            int selectedIndex = Integer.parseInt(line.split(" ")[1]) - 1;
+            list.get(selectedIndex).markAsDone();
+            statement = "____________________________________________________________\n"
                     +"Nice! I've marked this task as done: \n"
-                    + list[selectedIndex] + "\n"
+                    + list.get(selectedIndex) + "\n"
                     + "____________________________________________________________\n";
 
         } catch (RuntimeException e) {
@@ -219,7 +250,7 @@ public class Duke {
     }
 
     // This function prints the full list of Tasks
-    private static String printFullList(Task[] list, int index) {
+    private static String printFullList(int index) {
         String printStatement;
         // This object acts as a buffer to build strings: they are based on mutable character arrays
         // This to reduce the cost of growing the string
@@ -230,7 +261,7 @@ public class Duke {
             int printOut = i+1;
             sb.append(printOut);
             sb.append(". ");
-            sb.append(list[i]);
+            sb.append(list.get(i));
             sb.append("\n");
         }
         sb.append("____________________________________________________________\n");
