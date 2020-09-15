@@ -3,16 +3,15 @@ import Duke.exceptions.IllegalDate;
 import Duke.exceptions.IllegalIndex;
 import Duke.exceptions.IllegalDescription;
 
+import java.io.IOException;
 import java.util.Scanner;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-
-
 
 public class Duke {
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws IOException {
+        Save save = new Save();
+        String home = System.getProperty("user.home");
+        //Read from memory
+        save.readFile(home+"/Documents/log.txt");
         boolean hasExit = false;
         int listIndex = 0;
         // Problem will come if there are more than 100 tasks
@@ -31,31 +30,6 @@ public class Duke {
                 case "bye":
                     hasExit = true;
                     printStatement = printByeMessage();
-                    break;
-                case "save":
-                    printStatement = "File have been saved to Documents.";
-                    try {
-                        String statement = printFullList(list, listIndex);
-                        String home = System.getProperty("user.home");
-                        home = home+"/Documents/log.txt";
-                        File file = new File(home);
-
-/*                        if(!file.exists()) {
-                            file.createNewFile();
-                        }*/
-                        FileWriter fw = new FileWriter(file.getAbsoluteFile());
-                        BufferedWriter bw = new BufferedWriter(fw);
-
-                        // Write in file
-                        bw.write(statement);
-
-                        // Close connection
-                        bw.close();
-                        listIndex--;
-
-                    } catch ( Exception e){
-                        System.out.println(e);
-                    }
                     break;
                 case "list":
                     printStatement = printFullList(list, listIndex);
@@ -135,6 +109,8 @@ public class Duke {
             }
             System.out.println(printStatement);
             listIndex++;
+
+            save.writeFile(home+"/Documents/log.txt",printFullList(list, listIndex));
         }
     }
 
