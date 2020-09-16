@@ -28,7 +28,7 @@ public class Duke {
 
             // process user input and decide what operation to use
             String operation = extractOperationType(line);
-            String printStatement = null;
+            String printStatement;
 
             switch (operation){
                 case "bye":
@@ -60,12 +60,14 @@ public class Duke {
                 case "deadline":
                 case "event":
                     try {
-                        if(operation.equals("todo")) printStatement = createNewTask(operation,extractDescriptionFromString(operation,line),null);
-                        else printStatement = createNewTask(operation,extractDescriptionFromString(operation,line),extractDateFromString(line));
+                        if(operation.equals("todo")) printStatement = createNewTask(operation,extractDescriptionFromString(operation,line),null,false);
+                        else printStatement = createNewTask(operation,extractDescriptionFromString(operation,line),extractDateFromString(line),false);
                     } catch (IllegalDate e) {
                         printEmptyDate();
+                        continue;
                     } catch (IllegalDescription e){
                         printEmptyDescription();
+                        continue;
                     }
                     break;
                 default:
@@ -78,7 +80,7 @@ public class Duke {
         }
     }
     
-    public static String createNewTask(String taskType, String description, String date) throws IllegalDate, IllegalDescription {
+    public static String createNewTask(String taskType, String description, String date, Boolean status) throws IllegalDate, IllegalDescription {
         String printStatement = null;
         if(description.isEmpty()) throw new IllegalDescription();
         switch(taskType) {
@@ -101,6 +103,7 @@ public class Duke {
                 printStatement = printNIncrementTask(numberOfTasks);
                 break;
         }
+        if (status) list.get(numberOfTasks-1).markAsDone();
         return printStatement;
     }
 

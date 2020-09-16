@@ -22,10 +22,8 @@ public class Save extends Duke {
         File file = new File(homeDirectory);
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
-
         // Write in file
         bw.write(statement.trim());
-
         // Close connection
         bw.close();
     }
@@ -38,7 +36,6 @@ public class Save extends Duke {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 if (data.contains(toDiscard[0])||data.contains(toDiscard[1])) continue;
-//                System.out.println(data);
                 String taskType = extractTaskType(data);
                 boolean status = extractDoneStatus(data);
                 String description = extractDescription(data,taskType);
@@ -46,7 +43,8 @@ public class Save extends Duke {
                 if (taskType.equals("event")||taskType.equals("deadline")){
                     date = extractDate(data,taskType);
                 }
-                Duke.createNewTask(taskType,description,date);
+                Duke.createNewTask(taskType,description,date,status);
+
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -69,9 +67,9 @@ public class Save extends Duke {
 
     private static boolean extractDoneStatus(String line) {
         boolean isDone;
-        String operation = line.split("]")[2];
+        String operation = line.split("]")[1];
         isDone = operation.contains("\u2713");
-//        System.out.println(isDone);
+//        System.out.println(operation);
         return isDone;
     }
 
