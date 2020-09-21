@@ -11,15 +11,17 @@ import java.util.ArrayList;
 public class Duke {
     protected static ArrayList<Task> list = new ArrayList<>();
     protected static int numberOfTasks = 0;
+    //retrieve home directory & set homeDirectory
+    private static String home = System.getProperty("user.home");
+    protected final static String homeDirectory = home+"/Documents/log.txt";
+
     public static void main(String[] args) throws IOException {
         Save save = new Save();
-        String home = System.getProperty("user.home");
-        //Read from memory
-        save.readFile(home+"/Documents/log.txt");
+
+        //Read from memory & location to read and write file
+        save.readFile(homeDirectory);
         boolean hasExit = false;
 
-        // Problem will come if there are more than 100 tasks
-//        Task[] list = new Task[100];
         printWelcomeMessage();
         while (!hasExit) {
             // Read User input
@@ -42,7 +44,7 @@ public class Duke {
                 case "done":
                     try {
                         printStatement = markTaskAsDone(line);
-                    } catch ( IllegalIndex e) {
+                    } catch (IllegalIndex e) {
                         returnIllegalIndexStatement();
                         continue;
                     }
@@ -50,7 +52,7 @@ public class Duke {
                 case "delete":
                     try {
                         printStatement = deleteTask(line);
-                    } catch ( IllegalIndex e) {
+                    } catch (IllegalIndex e) {
                         returnIllegalIndexStatement();
                         continue;
                     }
@@ -60,32 +62,41 @@ public class Duke {
                 case "deadline":
                 case "event":
                     try {
-                        if(operation.equals("todo")) printStatement = createNewTask(operation,extractDescriptionFromString(operation,line),null,false);
-                        else printStatement = createNewTask(operation,extractDescriptionFromString(operation,line),extractDateFromString(line),false);
+                        String taskDescription = extractDescriptionFromString(operation, line);
+                        if (operation.equals("todo")) {
+                            printStatement = createNewTask(operation, taskDescription,null,false);
+                        }
+                        else{
+
+                            String date = extractDateFromString(line);
+                            printStatement = createNewTask(operation, taskDescription ,date ,false);
+
+                        }
                     } catch (IllegalDate e) {
                         printEmptyDate();
                         continue;
+
                     } catch (IllegalDescription e){
                         printEmptyDescription();
                         continue;
+
                     }
                     break;
                 default:
                     printUnknownMessage();
                     continue;
-
             }
             System.out.println(printStatement);
-            save.writeFile(home+"/Documents/log.txt",printFullList(numberOfTasks));
+            save.writeFile(homeDirectory, printFullList(numberOfTasks));
         }
     }
     
-    public static String createNewTask(String taskType, String description, String date, Boolean status) throws IllegalDate, IllegalDescription {
+    public static String createNewTask(String taskType, String description, String date, Boolean status)
+            throws IllegalDate, IllegalDescription {
         String printStatement = null;
         if(description.isEmpty()) throw new IllegalDescription();
         switch(taskType) {
             case "todo":
-
                 ToDo t = new ToDo(description);
                 list.add(t);
                 printStatement = printNIncrementTask(numberOfTasks);
@@ -115,7 +126,8 @@ public class Duke {
     }
 
     // This function removes the task type and extracts the description of the task
-    private static String extractDescriptionFromString(String type, String userInput) throws IllegalDescription, IllegalDate {
+    private static String extractDescriptionFromString(String type, String userInput)
+            throws IllegalDescription, IllegalDate {
         String description;
         try {
             if (type.equals("todo")){
@@ -182,16 +194,15 @@ public class Duke {
         String statement;
         try {
             int selectedIndex = Integer.parseInt(line.split(" ")[1]) - 1;
+            if (selectedIndex<0) throw new IllegalIndex();
+            list.remove(list.get(selectedIndex));
             numberOfTasks--;
-//            System.out.println(selectedIndex);
             statement = "____________________________________________________________\n"
                     + "Noted. I've removed this task:  \n"
                     + list.get(selectedIndex) +"\n"
                     + "Now you have "+numberOfTasks+" in the list.\n"
                     + "____________________________________________________________\n";
-            list.remove(list.get(selectedIndex));
         } catch (RuntimeException e) {
-            numberOfTasks++;
             throw new IllegalIndex();
         }
         return statement;

@@ -10,10 +10,14 @@ public class Deadline extends Task {
     public Deadline(String description, String date) throws IllegalDate {
         super(description);
         if(date.contains("/by")) {
-            if (date.replace("/by","").trim().isEmpty()) throw new IllegalDate();
+            if (date.replace("/by","").trim().isEmpty()) {
+                throw new IllegalDate();
+            }
             setDate(date);
         }
-        else throw new IllegalDate();
+        else {
+            throw new IllegalDate();
+        }
 
     }
     public String getTaskType(){
@@ -28,7 +32,10 @@ public class Deadline extends Task {
     }
     @Override
     public String toString(){
+
         return getTaskType() + super.toString() + getDate();
     }
-    public String getDate(){ return this.date; }
+    public String getDate(){
+        return this.date;
+    }
 }
