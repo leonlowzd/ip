@@ -107,7 +107,7 @@ public class Save extends Duke {
             String description = extractDescription(data.split("\\|")[2].trim(),taskType);
             String date = extractDate(data,taskType);
             // Create New Task from Duke Main function
-            Duke.createNewTask(taskType,description,date,status);
+            Duke.createNewTask(taskType,description,date,status,false);
         }
     }
 

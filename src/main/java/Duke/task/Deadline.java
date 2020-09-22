@@ -1,6 +1,8 @@
-package Duke;
+package Duke.task;
 
+import Duke.Duke;
 import Duke.exceptions.IllegalDate;
+import Duke.task.Task;
 
 
 public class Deadline extends Task {

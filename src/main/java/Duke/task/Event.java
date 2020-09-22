@@ -1,5 +1,7 @@
-package Duke;
+package Duke.task;
+import Duke.Duke;
 import Duke.exceptions.IllegalDate;
+import Duke.task.Task;
 
 public class Event extends Task {
     protected String date;

@@ -2,9 +2,13 @@ package Duke;
 import Duke.exceptions.IllegalDate;
 import Duke.exceptions.IllegalIndex;
 import Duke.exceptions.IllegalDescription;
+import Duke.task.Deadline;
+import Duke.task.Event;
+import Duke.task.Task;
+import Duke.task.ToDo;
+import Duke.ui.TextUi;
 
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 
@@ -15,45 +19,44 @@ public class Duke {
     private static String home = System.getProperty("user.home");
     protected final static String homeDirectory = home+"/Documents/log.txt";
 
+    private static TextUi ui = new TextUi();
+
     public static void main(String[] args) throws IOException {
         Save save = new Save();
 
+        ui.showWelcomeMessage("");
         //Read from memory & location to read and write file
         save.readFile(homeDirectory);
         boolean hasExit = false;
 
-        printWelcomeMessage();
+//        printWelcomeMessage();
         while (!hasExit) {
-            // Read User input
-            Scanner in = new Scanner(System.in);
-            String line = in.nextLine();
-
+            String userCommand = ui.getUserCommand();
             // process user input and decide what operation to use
-            String operation = extractOperationType(line);
-            String printStatement;
+            String operation = extractOperationType(userCommand);
 
             switch (operation){
                 case "bye":
                     hasExit = true;
-                    printStatement = printByeMessage();
+                    ui.showGoodbyeMessage();
                     break;
                 case "list":
-                    printStatement = printFullList(numberOfTasks);
+                    ui.showTaskListView(list);
                     break;
 
                 case "done":
                     try {
-                        printStatement = markTaskAsDone(line);
+                        markTaskAsDone(userCommand);
                     } catch (IllegalIndex e) {
-                        returnIllegalIndexStatement();
+                        ui.showIllegalIndexMessage();
                         continue;
                     }
                     break;
                 case "delete":
                     try {
-                        printStatement = deleteTask(line);
+                        deleteTask(userCommand);
                     } catch (IllegalIndex e) {
-                        returnIllegalIndexStatement();
+                        ui.showIllegalIndexMessage();
                         continue;
                     }
                     break;
@@ -62,60 +65,66 @@ public class Duke {
                 case "deadline":
                 case "event":
                     try {
-                        String taskDescription = extractDescriptionFromString(operation, line);
+                        String taskDescription = extractDescriptionFromString(operation, userCommand);
                         if (operation.equals("todo")) {
-                            printStatement = createNewTask(operation, taskDescription,null,false);
+                            createNewTask(operation, taskDescription,null,false,true);
                         }
                         else{
 
-                            String date = extractDateFromString(line);
-                            printStatement = createNewTask(operation, taskDescription ,date ,false);
+                            String date = extractDateFromString(userCommand);
+                            createNewTask(operation, taskDescription ,date ,false,true);
 
                         }
                     } catch (IllegalDate e) {
-                        printEmptyDate();
+                        ui.showIllegalDateMessage();
                         continue;
 
                     } catch (IllegalDescription e){
-                        printEmptyDescription();
+                        ui.showIllegalDescriptionMessage();
                         continue;
 
                     }
                     break;
                 default:
-                    printUnknownMessage();
+                    ui.showIllegalCommandMessage();
                     continue;
             }
-            System.out.println(printStatement);
             save.writeFile(homeDirectory, printFullList(numberOfTasks));
         }
     }
     
-    public static String createNewTask(String taskType, String description, String date, Boolean status)
+    public static void createNewTask(String taskType, String description, String date,
+                                     Boolean status, Boolean mode)
             throws IllegalDate, IllegalDescription {
-        String printStatement = null;
         if(description.isEmpty()) throw new IllegalDescription();
         switch(taskType) {
             case "todo":
-                ToDo t = new ToDo(description);
-                list.add(t);
-                printStatement = printNIncrementTask(numberOfTasks);
+                ToDo todo = new ToDo(description);
+                list.add(todo);
+                numberOfTasks++;
+                if (mode) {
+                    ui.showCreatedTask(todo,numberOfTasks);
+                }
                 break;
 
             case "deadline":
-                Deadline d = new Deadline(description, date);
-                list.add(d);
-                printStatement = printNIncrementTask(numberOfTasks);
+                Deadline deadline = new Deadline(description, date);
+                list.add(deadline);
+                if (mode) {
+                    ui.showCreatedTask(deadline,numberOfTasks);
+                }
                 break;
 
             case "event":
-                Event e = new Event(description, date);
-                list.add(e);
-                printStatement = printNIncrementTask(numberOfTasks);
+                Event event = new Event(description, date);
+                list.add(event);
+                numberOfTasks++;
+                if (mode){
+                    ui.showCreatedTask(event,numberOfTasks);
+                }
                 break;
         }
         if (status) list.get(numberOfTasks-1).markAsDone();
-        return printStatement;
     }
 
     // This function extracts the operation type from the user input's String
@@ -156,91 +165,33 @@ public class Duke {
 
     }
 
-    private static void printUnknownMessage () {
-        System.out.println("____________________________________________________________\n"+
-                "☹ OOPS!!! I'm sorry, but I don't know what that means :-(\n"+
-                "____________________________________________________________\n");
-    }
-
-    private static void returnIllegalIndexStatement () {
-        System.out.println("____________________________________________________________\n" +
-                "☹ OOPS!!! Illegal index, it does not exist in the list\n" +
-                "____________________________________________________________\n");
-    }
-    //print out empty date function
-    private static void printEmptyDate () {
-        System.out.println("____________________________________________________________\n" +
-                "☹ OOPS!!! Invalid Date input.\n" +
-                "____________________________________________________________\n");
-    }
-    // print out empty disc function
-    private static void printEmptyDescription () {
-        System.out.println("____________________________________________________________\n" +
-                "☹ OOPS!!! The Description cannot be empty.\n" +
-                "____________________________________________________________\n");
-    }
-
-    // This function constructs the printout of the newly added task
-    private static String printNIncrementTask(int index){
-        numberOfTasks++;
-        return "____________________________________________________________\n"
-                + "Got it. I've added this task:\n"
-                + "     " + list.get(index) + "\n"
-                + "Now you have "+numberOfTasks+" in the list.\n"
-                + "____________________________________________________________\n";
-    }
     // This function selects the tagged index from user input and deletes it from the list
-    private static String deleteTask (String line) throws IllegalIndex {
-        String statement;
+    private static void deleteTask (String line) throws IllegalIndex {
         try {
             int selectedIndex = Integer.parseInt(line.split(" ")[1]) - 1;
             if (selectedIndex<0) throw new IllegalIndex();
-            list.remove(list.get(selectedIndex));
             numberOfTasks--;
-            statement = "____________________________________________________________\n"
-                    + "Noted. I've removed this task:  \n"
-                    + list.get(selectedIndex) +"\n"
-                    + "Now you have "+numberOfTasks+" in the list.\n"
-                    + "____________________________________________________________\n";
+            ui.showDeleteTaskMessage(list.get(selectedIndex),numberOfTasks);
+            list.remove(list.get(selectedIndex));
+
         } catch (RuntimeException e) {
             throw new IllegalIndex();
         }
-        return statement;
     }
 
-
     // This function marks the tagged index from user input as complete and prints the statement
-    private static String markTaskAsDone (String line) throws IllegalIndex  {
+    private static void markTaskAsDone (String line) throws IllegalIndex  {
         String statement;
         try {
             int selectedIndex = Integer.parseInt(line.split(" ")[1]) - 1;
             list.get(selectedIndex).markAsDone();
-            statement = "____________________________________________________________\n"
-                    +"Nice! I've marked this task as done: \n"
-                    + list.get(selectedIndex) + "\n"
-                    + "____________________________________________________________\n";
+            ui.showTaskAsDoneMessage(list.get(selectedIndex));
 
         } catch (RuntimeException e) {
             throw new IllegalIndex();
         }
-        return statement;
     }
 
-    // This function prints the program's welcome message
-    private static void printWelcomeMessage(){
-        String toPrint = "____________________________________________________________\n"
-                + " Hello! I'm Duke\n"
-                + " What can I do for you?\n"
-                + "____________________________________________________________\n";
-        System.out.println(toPrint);
-    }
-
-    // This function prints the program's goodbye message
-    private static String printByeMessage() {
-        return "____________________________________________________________\n"
-                + " Bye. Hope to see you again soon!\n"
-                + "____________________________________________________________\n";
-    }
 
     // This function prints the full list of Tasks
     private static String printFullList(int index) {

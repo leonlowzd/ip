@@ -1,4 +1,7 @@
-package Duke;
+package Duke.task;
+
+import Duke.Duke;
+import Duke.task.Task;
 
 public class ToDo extends Task {
     protected boolean isDone;
