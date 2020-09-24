@@ -8,15 +8,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.util.Arrays;
 import java.util.Scanner; // Import the Scanner class to read text file
 
-public class Save extends Duke {
-    private final String textDivider = " | ";
-    private static final String[] toDiscard = {"____________________________________________________________",
-            "Here are the tasks in your list:"};
+public class LogFile extends Duke {
+    private static final String TEXT_DIVIDER = " | ";
 
-    public Save() {
+    public LogFile() {
     }
     public void writeFile(String homeDirectory, String statement) throws IOException {
 
@@ -34,21 +31,25 @@ public class Save extends Duke {
         String[] lines = statement.split("\\r?\\n");
         StringBuilder sb = new StringBuilder();
         for (String line : lines){
-            if (!(line.contains(toDiscard[0])||line.contains(toDiscard[1]))) {
-                extractListToText(sb, line);
-            }
+            extractLineToText(sb, line);
         }
         return sb;
     }
 
-    private void extractListToText(StringBuilder sb, String line) {
-        String extractedType= line.split("]")[0].replace("[","") +textDivider;
-        String extractedDoneStatus = convertDoneStatusToText(line);
-        String extractedDescription = convertDescriptionToText(line, extractedType);
-        String extractedDate = convertDateToText(extractedType, line);
-        sb.append(extractedType).append(extractedDoneStatus).append(extractedDescription).append(extractedDate).append("\n");
+    private void extractLineToText(StringBuilder sb, String line) {
+        if (!line.isEmpty()) {
+            String extractedType = convertTypeToText(line);
+            String extractedDoneStatus = convertDoneStatusToText(line);
+            String extractedDescription = convertDescriptionToText(line, extractedType);
+            String extractedDate = convertDateToText(extractedType, line);
+            sb.append(extractedType).append(extractedDoneStatus).append(extractedDescription).append(extractedDate).append("\n");
+        }
+
     }
 
+    private String convertTypeToText(String line) {
+        return line.split("]")[0].replace("[","") +TEXT_DIVIDER;
+    }
     private String convertDescriptionToText(String line, String extractedType) {
         String extractedDescription = line.split(" ",3)[2].trim();
         if (extractedType.contains("E")) {
@@ -64,9 +65,9 @@ public class Save extends Duke {
         line = line.split(" ",3)[2].trim();
         String extractedDate = "";
         if(extractedType.contains("E")) {
-            extractedDate = textDivider+ line.split("\\(at:")[1].trim().replace(")","").trim();
+            extractedDate = TEXT_DIVIDER+ line.split("\\(at:")[1].trim().replace(")","").trim();
         } else if (extractedType.contains("D")) {
-            extractedDate = textDivider+ line.split("\\(by:")[1].replace(")","").trim();
+            extractedDate = TEXT_DIVIDER+ line.split("\\(by:")[1].replace(")","").trim();
         }
         return extractedDate;
     }
@@ -74,10 +75,10 @@ public class Save extends Duke {
     private String convertDoneStatusToText(String line) {
         String extractedDoneStatus = line.split("]")[1].replace("[","");
         if (extractedDoneStatus.equals("\u2713")) {
-            extractedDoneStatus = "1"+textDivider;
+            extractedDoneStatus = "1"+TEXT_DIVIDER;
         }
         else {
-            extractedDoneStatus = "0"+textDivider;
+            extractedDoneStatus = "0"+TEXT_DIVIDER;
         }
         return extractedDoneStatus;
     }

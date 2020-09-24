@@ -4,29 +4,27 @@ import Duke.exceptions.IllegalIndex;
 import Duke.exceptions.IllegalDescription;
 import Duke.task.Deadline;
 import Duke.task.Event;
-import Duke.task.Task;
 import Duke.task.ToDo;
 import Duke.ui.TextUi;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 public class Duke {
-    protected static ArrayList<Task> list = new ArrayList<>();
     protected static int numberOfTasks = 0;
     //retrieve home directory & set homeDirectory
     private static String home = System.getProperty("user.home");
     protected final static String homeDirectory = home+"/Documents/log.txt";
 
     private static TextUi ui = new TextUi();
+    private static TaskList taskList = new TaskList();
 
     public static void main(String[] args) throws IOException {
-        Save save = new Save();
+        LogFile logFile = new LogFile();
 
         ui.showWelcomeMessage("");
         //Read from memory & location to read and write file
-        save.readFile(homeDirectory);
+        logFile.readFile(homeDirectory);
         boolean hasExit = false;
 
 //        printWelcomeMessage();
@@ -41,7 +39,7 @@ public class Duke {
                     ui.showGoodbyeMessage();
                     break;
                 case "list":
-                    ui.showTaskListView(list);
+                    ui.showTaskListView(taskList.printAllTask());
                     break;
 
                 case "done":
@@ -89,7 +87,7 @@ public class Duke {
                     ui.showIllegalCommandMessage();
                     continue;
             }
-            save.writeFile(homeDirectory, printFullList(numberOfTasks));
+            logFile.writeFile(homeDirectory,taskList.printAllTask());
         }
     }
     
@@ -100,7 +98,7 @@ public class Duke {
         switch(taskType) {
             case "todo":
                 ToDo todo = new ToDo(description);
-                list.add(todo);
+                taskList.addNewTask(todo);
                 numberOfTasks++;
                 if (mode) {
                     ui.showCreatedTask(todo,numberOfTasks);
@@ -109,7 +107,7 @@ public class Duke {
 
             case "deadline":
                 Deadline deadline = new Deadline(description, date);
-                list.add(deadline);
+                taskList.addNewTask(deadline);
                 if (mode) {
                     ui.showCreatedTask(deadline,numberOfTasks);
                 }
@@ -117,14 +115,14 @@ public class Duke {
 
             case "event":
                 Event event = new Event(description, date);
-                list.add(event);
+                taskList.addNewTask(event);
                 numberOfTasks++;
                 if (mode){
                     ui.showCreatedTask(event,numberOfTasks);
                 }
                 break;
         }
-        if (status) list.get(numberOfTasks-1).markAsDone();
+        if (status) taskList.getTask(numberOfTasks-1).markAsDone();
     }
 
     // This function extracts the operation type from the user input's String
@@ -171,8 +169,8 @@ public class Duke {
             int selectedIndex = Integer.parseInt(line.split(" ")[1]) - 1;
             if (selectedIndex<0) throw new IllegalIndex();
             numberOfTasks--;
-            ui.showDeleteTaskMessage(list.get(selectedIndex),numberOfTasks);
-            list.remove(list.get(selectedIndex));
+            ui.showDeleteTaskMessage(taskList.getTask(selectedIndex),numberOfTasks);
+            taskList.removeTask(selectedIndex);
 
         } catch (RuntimeException e) {
             throw new IllegalIndex();
@@ -181,35 +179,14 @@ public class Duke {
 
     // This function marks the tagged index from user input as complete and prints the statement
     private static void markTaskAsDone (String line) throws IllegalIndex  {
-        String statement;
         try {
             int selectedIndex = Integer.parseInt(line.split(" ")[1]) - 1;
-            list.get(selectedIndex).markAsDone();
-            ui.showTaskAsDoneMessage(list.get(selectedIndex));
+            taskList.getTask(selectedIndex).markAsDone();
+            ui.showTaskAsDoneMessage(taskList.getTask(selectedIndex));
 
         } catch (RuntimeException e) {
             throw new IllegalIndex();
         }
     }
 
-
-    // This function prints the full list of Tasks
-    private static String printFullList(int index) {
-        String printStatement;
-        // This object acts as a buffer to build strings: they are based on mutable character arrays
-        // This to reduce the cost of growing the string
-        StringBuilder sb = new StringBuilder();
-        sb.append("____________________________________________________________\n");
-        sb.append("Here are the tasks in your list:\n");
-        for (int i = 0; i< index; i++){
-            int printOut = i+1;
-            sb.append(printOut);
-            sb.append(". ");
-            sb.append(list.get(i));
-            sb.append("\n");
-        }
-        sb.append("____________________________________________________________\n");
-        printStatement = sb.toString();
-        return printStatement;
-    }
 }

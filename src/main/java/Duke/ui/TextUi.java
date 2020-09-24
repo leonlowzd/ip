@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Duke.TaskList;
 import Duke.task.Task;
 
 import static Duke.common.Messages.*;
@@ -48,7 +49,7 @@ public class TextUi {
      * @param rawInputLine full raw user input line.
      * @return true if the entire user input line should be ignored.
      */
-    private boolean shouldIgnore(String rawInputLine) {
+    private boolean removeEmptyLines(String rawInputLine) {
         return rawInputLine.trim().isEmpty() || isCommentLine(rawInputLine);
     }
 
@@ -71,8 +72,7 @@ public class TextUi {
     public String getUserCommand() {
         String fullInputLine = in.nextLine();
 
-        // silently consume all ignored lines
-        while (shouldIgnore(fullInputLine)) {
+        while (removeEmptyLines(fullInputLine)) {
             fullInputLine = in.nextLine();
         }
 
@@ -106,16 +106,8 @@ public class TextUi {
     /**
      * Shows a list of persons to the user, formatted as an indexed list.
      */
-    public void showTaskListView(ArrayList<Task> Tasks) {
-        StringBuilder sb = new StringBuilder();
-        int index = 0;
-        for (Task task : Tasks) {
-            sb.append(index+1+". ");
-            sb.append(task);
-            sb.append("\\n");
-            index++;
-        }
-        showToUser(DIVIDER, MESSAGE_SHOW_LIST,sb.toString(), DIVIDER);
+    public void showTaskListView(String taskList) {
+        showToUser(DIVIDER, MESSAGE_SHOW_LIST,taskList, DIVIDER);
     }
 
     public void showCreatedTask(Task task, int numberOfTasks){
