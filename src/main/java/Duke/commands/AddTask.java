@@ -35,7 +35,7 @@ public class AddTask extends Command{
                 ToDo todo = new ToDo(description);
                 tasks.addNewTask(todo);
                 if (mode) {
-                    ui.showCreatedTask(todo,tasks.getNumberOfTasksInList());
+                    ui.printCreatedTask(todo,tasks.getNumberOfTasksInList());
                 }
                 break;
 
@@ -43,7 +43,7 @@ public class AddTask extends Command{
                 Deadline deadline = new Deadline(description, date);
                 tasks.addNewTask(deadline);
                 if (mode) {
-                    ui.showCreatedTask(deadline,tasks.getNumberOfTasksInList());
+                    ui.printCreatedTask(deadline,tasks.getNumberOfTasksInList());
                 }
                 break;
 
@@ -51,14 +51,14 @@ public class AddTask extends Command{
                 Event event = new Event(description, date);
                 tasks.addNewTask(event);
                 if (mode) {
-                    ui.showCreatedTask(event,tasks.getNumberOfTasksInList());
+                    ui.printCreatedTask(event,tasks.getNumberOfTasksInList());
                 }
                 break;
 
             }
 
         } catch (IllegalDescription e) {
-            ui.showIllegalDescriptionMessage();
+            ui.printIllegalDescriptionMessage();
 
         }
 

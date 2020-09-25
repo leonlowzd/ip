@@ -2,7 +2,7 @@ package Duke.data.task;
 
 import Duke.exceptions.IllegalDescription;
 
-import static Duke.common.Messages.DEADLINE_DISPLAY;
+import static Duke.common.TaskNames.DEADLINE_DISPLAY;
 
 
 public class Deadline extends Task {

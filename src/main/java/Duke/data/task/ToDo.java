@@ -1,7 +1,7 @@
 package Duke.data.task;
 
 import Duke.exceptions.IllegalDescription;
-import static Duke.common.Messages.TODO_DISPLAY;
+import static Duke.common.TaskNames.TODO_DISPLAY;
 
 public class ToDo extends Task {
     protected boolean isDone;

@@ -1,8 +1,5 @@
 package Duke.commands;
 
-import Duke.exceptions.IllegalIndex;
-import Duke.ui.TextUi;
-
 public class DoneCommand extends Command{
     public static final String COMMAND_WORD = "done";
     private final int indexToMark;
@@ -13,10 +10,10 @@ public class DoneCommand extends Command{
     @Override
     public void execute() {
         if (indexToMark > tasks.getNumberOfTasksInList()-1){
-            ui.showIllegalIndexMessage();
+            ui.printIllegalIndexMessage();
         } else {
             tasks.getTask(indexToMark).markAsDone();
-            ui.showTaskAsDoneMessage(tasks.getTask(indexToMark));
+            ui.printTaskAsDoneMessage(tasks.getTask(indexToMark));
         }
 
     }

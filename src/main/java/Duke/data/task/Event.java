@@ -2,7 +2,7 @@ package Duke.data.task;
 
 import Duke.exceptions.IllegalDescription;
 
-import static Duke.common.Messages.EVENT_DISPLAY;
+import static Duke.common.TaskNames.EVENT_DISPLAY;
 
 public class Event extends Task {
     protected String date;

@@ -7,7 +7,6 @@ import Duke.ui.TextUi;
 
 
 public class Duke {
-    protected static int numberOfTasks = 0;
     //retrieve home directory & set homeDirectory
     private final static String HOME_DIRECTORY = System.getProperty("user.home");
     private final static String STORE_DIRECTORY = HOME_DIRECTORY+"/Documents/log.txt";
@@ -27,7 +26,7 @@ public class Duke {
     }
 
     private static void start() {
-        ui.showWelcomeMessage();
+        ui.printWelcomeMessage();
         storage.readFile(STORE_DIRECTORY);
     }
 
@@ -38,13 +37,12 @@ public class Duke {
             command = Parser.parseCommand(userCommandText);
             command.setData(taskList);
             command.execute();
-            storage.writeFile(STORE_DIRECTORY,taskList.getAllTasks());
+            storage.writeFile(STORE_DIRECTORY);
         } while (!ByeCommand.isExit(command));
     }
 
     private static void exit() {
-        System.out.println("bye");
-//        ui.showGoodbyeMessage();
+        ui.showGoodbyeMessage();
         System.exit(0);
     }
 

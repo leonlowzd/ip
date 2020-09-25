@@ -78,58 +78,58 @@ public class TextUi {
      * Generates and prints the welcome message upon the start of the application.
      *
      */
-    public void showWelcomeMessage() {
-        showToUser(
+    public void printWelcomeMessage() {
+        printOut(
                 DIVIDER,
                 MESSAGE_WELCOME,
                 DIVIDER);
     }
 
     public void showGoodbyeMessage() {
-        showToUser(DIVIDER, MESSAGE_GOODBYE, DIVIDER);
+        printOut(DIVIDER, MESSAGE_GOODBYE, DIVIDER);
     }
 
 
     /**
      * Shows message(s) to the user
      */
-    public void showToUser(String... message) {
-        for (String m : message) {
-            System.out.println(m);
+    public void printOut(String... text) {
+        for (String t : text) {
+            System.out.println(t);
         }
     }
 
     /**
      * Shows a list of persons to the user, formatted as an indexed list.
      */
-    public void showTaskListView(String toPrint) {
-        showToUser(DIVIDER, MESSAGE_SHOW_LIST, toPrint, DIVIDER);
+    public void printTaskListView(String toPrint) {
+        printOut(DIVIDER, MESSAGE_SHOW_LIST, toPrint, DIVIDER);
     }
 
-    public void showCreatedTask(Task task, int numberOfTasks) {
+    public void printCreatedTask(Task task, int numberOfTasks) {
         String numberOfTaskMessage = "Now you have " + numberOfTasks + " in the list.\n";
-        showToUser(DIVIDER, MESSAGE_ADD_NEW_TASK, task.toString(), numberOfTaskMessage, DIVIDER);
+        printOut(DIVIDER, MESSAGE_ADD_NEW_TASK, task.toString(), numberOfTaskMessage, DIVIDER);
     }
 
-    public void showDeleteTaskMessage(Task task, int selectedIndex) {
+    public void printDeleteTaskMessage(Task task, int selectedIndex) {
         String numberOfTaskMessage = "Now you have " + selectedIndex + " in the list.\n";
-        showToUser(DIVIDER, MESSAGE_REMOVED_TASK, task.toString(), numberOfTaskMessage, DIVIDER);
+        printOut(DIVIDER, MESSAGE_REMOVED_TASK, task.toString(), numberOfTaskMessage, DIVIDER);
     }
 
-    public void showTaskAsDoneMessage(Task task) {
-        showToUser(DIVIDER, MESSAGE_MARKED_AS_DONE, task.toString(), DIVIDER);
+    public void printTaskAsDoneMessage(Task task) {
+        printOut(DIVIDER, MESSAGE_MARKED_AS_DONE, task.toString(), DIVIDER);
     }
 
 
-    public void showIllegalDescriptionMessage() {
-        showToUser(DIVIDER, MESSAGE_DESCRIPTION_ERROR, DIVIDER);
+    public void printIllegalDescriptionMessage() {
+        printOut(DIVIDER, MESSAGE_DESCRIPTION_ERROR, DIVIDER);
     }
 
-    public void showIllegalIndexMessage() {
-        showToUser(DIVIDER, MESSAGE_INDEX_ERROR, DIVIDER);
+    public void printIllegalIndexMessage() {
+        printOut(DIVIDER, MESSAGE_INDEX_ERROR, DIVIDER);
     }
 
-    public void showError(String error) {
-        showToUser(error);
+    public void printCustomError(String error) {
+        printOut(error);
     }
 }

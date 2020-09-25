@@ -12,12 +12,12 @@ public class DeleteCommand extends Command{
     @Override
     public void execute() {
         if (indexToDelete > tasks.getNumberOfTasksInList()-1) {
-            ui.showIllegalIndexMessage();
+            ui.printIllegalIndexMessage();
 
         } else {
             Task TaskToDelete = tasks.getTask(indexToDelete);
             tasks.removeTask(indexToDelete);
-            ui.showDeleteTaskMessage(TaskToDelete ,tasks.getNumberOfTasksInList());
+            ui.printDeleteTaskMessage(TaskToDelete ,tasks.getNumberOfTasksInList());
 
         }
     }

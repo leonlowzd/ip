@@ -19,6 +19,6 @@ public class ListCommand extends Command {
             sb.append("\n");
             index++;
         }
-        ui.showTaskListView(sb.toString());
+        ui.printTaskListView(sb.toString());
     }
 }

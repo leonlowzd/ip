@@ -1,8 +1,6 @@
 package Duke.data;
 
-import Duke.Duke;
 import Duke.commands.AddTask;
-import Duke.data.TaskList;
 import Duke.data.task.Task;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,19 +10,23 @@ import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.util.ArrayList;
 import java.util.Scanner; // Import the Scanner class to read text file
 
+import static Duke.common.TaskNames.*;
+
+
 public class Storage {
     private static final String TEXT_DIVIDER = " | ";
     private final TaskList tasks;
     public Storage(TaskList tasks) {
         this.tasks = tasks;
     }
-    public void writeFile(String homeDirectory, ArrayList<Task> tasks) {
+
+    public void writeFile(String homeDirectory) {
         try {
             File file = new File(homeDirectory);
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             // Write in file
-            StringBuilder sb = convertListToTextFormat(tasks);
+            StringBuilder sb = convertListToTextFormat(this.tasks);
             bw.write(sb.toString());
             // Close connection
             bw.close();
@@ -34,7 +36,8 @@ public class Storage {
 
     }
 
-    private StringBuilder convertListToTextFormat(ArrayList<Task> tasks) {
+    private StringBuilder convertListToTextFormat(TaskList taskList) {
+        ArrayList<Task> tasks = taskList.getAllTasks();
         StringBuilder sb = new StringBuilder();
         for (Task task: tasks) {
             String type = task.getTaskType().replace("[","").replace("]","") + TEXT_DIVIDER;
@@ -73,7 +76,7 @@ public class Storage {
             boolean status = extractDoneStatus(list[1].trim());
             String description = list[2].trim();
             String date = "";
-            if (!(type.equals("todo"))) date = list[2].trim();
+            if (!(type.equals(TODO))) date = list[2].trim();
 
             AddTask add = new AddTask(type,description,date,false);
             add.setData(tasks);
@@ -94,13 +97,11 @@ public class Storage {
     private String extractTaskType(String type) {
         String taskType;
         if (type.contains("E")) {
-            taskType = "event";
-        }
-        else if(type.contains("T")) {
-            taskType = "todo";
-        }
-        else {
-            taskType = "deadline";
+            taskType = EVENT;
+        } else if(type.contains("T")) {
+            taskType = TODO;
+        } else {
+            taskType = DEADLINE;
         }
         return taskType;
     }

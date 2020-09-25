@@ -8,6 +8,6 @@ public class InvalidCommand extends Command {
 
     @Override
     public void execute() {
-        ui.showError(this.feedbackToUser + "\n");
+        ui.printCustomError(this.feedbackToUser + "\n");
     }
 }

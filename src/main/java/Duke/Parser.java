@@ -1,16 +1,16 @@
 package Duke;
 
 import Duke.commands.*;
-import Duke.data.TaskList;
 import Duke.exceptions.IllegalDate;
 import Duke.exceptions.IllegalDescription;
 import Duke.exceptions.IllegalIndex;
 
 import static Duke.common.Messages.*;
+import static Duke.common.TaskNames.DEADLINE_DATE_IDENTIFIER;
+import static Duke.common.TaskNames.EVENT_DATE_IDENTIFIER;
 
 public class Parser {
-
-    public Parser(TaskList tasks, String userInput) {
+        public Parser() {
     }
 
     public static Command parseCommand(String userInput) {
@@ -35,6 +35,7 @@ public class Parser {
             return new InvalidCommand(MESSAGE_INVALID_COMMAND_FORMAT);
         }
     }
+
     private static int getIndexFromString(String arguments) {
         int index;
         try {
@@ -48,7 +49,7 @@ public class Parser {
     private static Command prepareDeleteCommand(String arguments) {
         try {
             int selectedIndex = getIndexFromString(arguments);
-            if (selectedIndex < 0 ) throw new IllegalIndex();
+            if (selectedIndex < 0) throw new IllegalIndex();
             return new DeleteCommand(selectedIndex);
 
         } catch (IllegalIndex e) {
@@ -80,16 +81,15 @@ public class Parser {
         String description;
         String date;
         try {
-
             if (commandWord.equals(AddTask.COMMAND_WORD_DEADLINE)) {
-                date = arguments.substring(arguments.indexOf("/by"));
-                date = date.replace("/by","").trim();
+                date = arguments.substring(arguments.indexOf(DEADLINE_DATE_IDENTIFIER));
+                date = date.replace(DEADLINE_DATE_IDENTIFIER, "").trim();
                 description = arguments.substring(0, arguments.lastIndexOf("/")).trim();
                 if (date.isEmpty()) throw new IllegalDate();
 
             } else if (commandWord.equals(AddTask.COMMAND_WORD_EVENT)) {
-                date = arguments.substring(arguments.indexOf("/at"));
-                date = date.replace("/at","").trim();
+                date = arguments.substring(arguments.indexOf(EVENT_DATE_IDENTIFIER));
+                date = date.replace(EVENT_DATE_IDENTIFIER, "").trim();
                 description = arguments.substring(0, arguments.lastIndexOf("/")).trim();
                 if (date.isEmpty()) throw new IllegalDate();
 
@@ -98,7 +98,7 @@ public class Parser {
                 description = arguments;
             }
             if (description.isEmpty()) throw new IllegalDescription();
-            return new AddTask(commandWord, description, date,true);
+            return new AddTask(commandWord, description, date, true);
 
         } catch (IllegalDate | StringIndexOutOfBoundsException e) {
             return new InvalidCommand(MESSAGE_DATE_ERROR);
