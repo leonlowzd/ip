@@ -1,13 +1,10 @@
 package Duke.data.task;
 
-import Duke.exceptions.IllegalDescription;
-
 abstract public class Task {
     protected String description;
     protected boolean isDone;
 
-    public Task(String description) throws IllegalDescription {
-        if (description.isEmpty()) throw new IllegalDescription();
+    public Task(String description) {
         this.description = description;
         this.isDone = false;
     }

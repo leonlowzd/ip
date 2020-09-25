@@ -1,7 +1,5 @@
 package Duke.data.task;
 
-import Duke.exceptions.IllegalDescription;
-
 import static Duke.common.TaskNames.DEADLINE_DISPLAY;
 
 
@@ -9,7 +7,7 @@ public class Deadline extends Task {
     protected String date;
     protected final String TASK_TYPE = DEADLINE_DISPLAY;
 
-    public Deadline(String description, String date) throws IllegalDescription {
+    public Deadline(String description, String date) {
         super(description);
         setDate(date);
 

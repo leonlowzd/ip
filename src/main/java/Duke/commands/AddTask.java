@@ -29,38 +29,31 @@ public class AddTask extends Command{
 
     @Override
     public void execute() {
-        try {
-            switch (type) {
-            case TODO_ADD:
-                ToDo todo = new ToDo(description);
-                tasks.addNewTask(todo);
-                if (mode) {
-                    ui.printCreatedTask(todo,tasks.getNumberOfTasksInList());
-                }
-                break;
-
-            case DEADLINE_ADD:
-                Deadline deadline = new Deadline(description, date);
-                tasks.addNewTask(deadline);
-                if (mode) {
-                    ui.printCreatedTask(deadline,tasks.getNumberOfTasksInList());
-                }
-                break;
-
-            case EVENT_ADD:
-                Event event = new Event(description, date);
-                tasks.addNewTask(event);
-                if (mode) {
-                    ui.printCreatedTask(event,tasks.getNumberOfTasksInList());
-                }
-                break;
-
+        switch (type) {
+        case TODO_ADD:
+            ToDo todo = new ToDo(description);
+            tasks.addNewTask(todo);
+            if (mode) {
+                ui.printCreatedTask(todo,tasks.getNumberOfTasksInList());
             }
+            break;
 
-        } catch (IllegalDescription e) {
-            ui.printIllegalDescriptionMessage();
+        case DEADLINE_ADD:
+            Deadline deadline = new Deadline(description, date);
+            tasks.addNewTask(deadline);
+            if (mode) {
+                ui.printCreatedTask(deadline,tasks.getNumberOfTasksInList());
+            }
+            break;
+
+        case EVENT_ADD:
+            Event event = new Event(description, date);
+            tasks.addNewTask(event);
+            if (mode) {
+                ui.printCreatedTask(event,tasks.getNumberOfTasksInList());
+            }
+            break;
 
         }
-
     }
 }

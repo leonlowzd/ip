@@ -32,7 +32,7 @@ public class Parser {
         case ListCommand.COMMAND_WORD:
             return prepareListCommand();
         default:
-            return new InvalidCommand(MESSAGE_INVALID_COMMAND_FORMAT);
+            return new InvalidCommand(MESSAGE_INVALID_COMMAND_ERROR);
         }
     }
 

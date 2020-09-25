@@ -91,7 +91,7 @@ public class TextUi {
 
 
     /**
-     * Shows message(s) to the user
+     * Prints message(s) to the user
      */
     public void printOut(String... text) {
         for (String t : text) {
