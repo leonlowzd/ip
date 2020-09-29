@@ -3,8 +3,10 @@ package Duke.commands;
 import Duke.data.task.Task;
 
 public class FindCommand extends Command{
+
     public static final String COMMAND_WORD = "find";
     private final String keyword;
+
     public FindCommand(String keyword) {
         this.keyword = keyword;
     }

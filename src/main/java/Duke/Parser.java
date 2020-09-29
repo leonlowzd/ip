@@ -5,6 +5,7 @@ import Duke.exceptions.IllegalDate;
 import Duke.exceptions.IllegalDescription;
 import Duke.exceptions.IllegalIndex;
 
+import static Duke.UserInputExtractor.*;
 import static Duke.common.Messages.*;
 import static Duke.common.TaskNames.DEADLINE_DATE_IDENTIFIER;
 import static Duke.common.TaskNames.EVENT_DATE_IDENTIFIER;
@@ -36,32 +37,6 @@ public class Parser {
         default:
             return new InvalidCommand(MESSAGE_INVALID_COMMAND_ERROR);
         }
-    }
-
-    private static String getDescription(String typeOfTask, String arguments) {
-        String description;
-        if (typeOfTask.equals(AddTask.COMMAND_WORD_TODO)) description = arguments;
-        else description = arguments.substring(0, arguments.lastIndexOf("/")).trim();
-        return description;
-    }
-
-    private static String getDate(String arguments, String eventDateIdentifier) throws IllegalDate {
-        String date;
-        System.out.println(EVENT_DATE_IDENTIFIER);
-        date = arguments.substring(arguments.indexOf(eventDateIdentifier));
-        date = date.replace(eventDateIdentifier, "").trim();
-        if (date.isEmpty()) throw new IllegalDate();
-        return date;
-    }
-
-    private static int getIndexFromString(String arguments) {
-        int index;
-        try {
-            index = Integer.parseInt(arguments.trim()) - 1;
-        } catch (RuntimeException e) {
-            index = -1;
-        }
-        return index;
     }
 
     private static Command prepareDeleteCommand(String arguments) {
