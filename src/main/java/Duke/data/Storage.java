@@ -80,7 +80,7 @@ public class Storage {
 
             AddTask add = new AddTask(type,description,date,false);
             add.setData(tasks);
-            add.execute();
+            add.run();
             if (status){
                 tasks.getTask(tasks.getNumberOfTasksInList()-1).markAsDone();
             }

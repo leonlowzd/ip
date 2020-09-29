@@ -8,7 +8,7 @@ public class DoneCommand extends Command{
         this.indexToMark = indexToMark;
     }
     @Override
-    public void execute() {
+    public void run() {
         if (indexToMark > tasks.getNumberOfTasksInList()-1){
             ui.printIllegalIndexMessage();
         } else {

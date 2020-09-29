@@ -7,7 +7,7 @@ public class InvalidCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void run() {
         ui.printCustomError(this.feedbackToUser + "\n");
     }
 }

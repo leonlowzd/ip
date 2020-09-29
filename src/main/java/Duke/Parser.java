@@ -10,7 +10,7 @@ import static Duke.common.TaskNames.DEADLINE_DATE_IDENTIFIER;
 import static Duke.common.TaskNames.EVENT_DATE_IDENTIFIER;
 
 public class Parser {
-        public Parser() {
+    public Parser() {
     }
 
     public static Command parseCommand(String userInput) {
@@ -36,6 +36,22 @@ public class Parser {
         }
     }
 
+    private static String getDescription(String typeOfTask, String arguments) {
+        String description;
+        if (typeOfTask.equals(AddTask.COMMAND_WORD_TODO)) description = arguments;
+        else description = arguments.substring(0, arguments.lastIndexOf("/")).trim();
+        return description;
+    }
+
+    private static String getDate(String arguments, String eventDateIdentifier) throws IllegalDate {
+        String date;
+        System.out.println(EVENT_DATE_IDENTIFIER);
+        date = arguments.substring(arguments.indexOf(eventDateIdentifier));
+        date = date.replace(eventDateIdentifier, "").trim();
+        if (date.isEmpty()) throw new IllegalDate();
+        return date;
+    }
+
     private static int getIndexFromString(String arguments) {
         int index;
         try {
@@ -54,7 +70,6 @@ public class Parser {
 
         } catch (IllegalIndex e) {
             return new InvalidCommand(MESSAGE_INDEX_ERROR);
-
         }
     }
 
@@ -82,21 +97,15 @@ public class Parser {
         String date;
         try {
             if (commandWord.equals(AddTask.COMMAND_WORD_DEADLINE)) {
-                date = arguments.substring(arguments.indexOf(DEADLINE_DATE_IDENTIFIER));
-                date = date.replace(DEADLINE_DATE_IDENTIFIER, "").trim();
-                description = arguments.substring(0, arguments.lastIndexOf("/")).trim();
-                if (date.isEmpty()) throw new IllegalDate();
+                date = getDate(arguments, DEADLINE_DATE_IDENTIFIER);
 
             } else if (commandWord.equals(AddTask.COMMAND_WORD_EVENT)) {
-                date = arguments.substring(arguments.indexOf(EVENT_DATE_IDENTIFIER));
-                date = date.replace(EVENT_DATE_IDENTIFIER, "").trim();
-                description = arguments.substring(0, arguments.lastIndexOf("/")).trim();
-                if (date.isEmpty()) throw new IllegalDate();
+                date = getDate(arguments, EVENT_DATE_IDENTIFIER);
 
             } else {
                 date = null;
-                description = arguments;
             }
+            description = getDescription(commandWord, arguments);
             if (description.isEmpty()) throw new IllegalDescription();
             return new AddTask(commandWord, description, date, true);
 

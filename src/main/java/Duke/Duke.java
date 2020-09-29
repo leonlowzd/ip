@@ -36,7 +36,7 @@ public class Duke {
             String userCommandText = ui.getUserCommand();
             command = Parser.parseCommand(userCommandText);
             command.setData(taskList);
-            command.execute();
+            command.run();
             storage.writeFile(STORE_DIRECTORY);
         } while (!ByeCommand.isExit(command));
     }

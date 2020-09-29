@@ -10,7 +10,7 @@ public class DeleteCommand extends Command{
     }
 
     @Override
-    public void execute() {
+    public void run() {
         if (indexToDelete > tasks.getNumberOfTasksInList()-1) {
             ui.printIllegalIndexMessage();
 

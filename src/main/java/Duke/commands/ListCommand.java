@@ -9,7 +9,7 @@ public class ListCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void run() {
         StringBuilder sb = new StringBuilder();
         int index = 0;
         for (Task task :tasks.getAllTasks()) {

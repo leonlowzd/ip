@@ -28,7 +28,7 @@ public class AddTask extends Command{
     }
 
     @Override
-    public void execute() {
+    public void run() {
         switch (type) {
         case TODO_ADD:
             ToDo todo = new ToDo(description);
