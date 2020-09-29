@@ -31,6 +31,8 @@ public class Parser {
             return prepareByeCommand();
         case ListCommand.COMMAND_WORD:
             return prepareListCommand();
+        case FindCommand.COMMAND_WORD:
+            return prepareFindCommand(arguments);
         default:
             return new InvalidCommand(MESSAGE_INVALID_COMMAND_ERROR);
         }
@@ -116,6 +118,10 @@ public class Parser {
             return new InvalidCommand(MESSAGE_DESCRIPTION_ERROR);
 
         }
+    }
+
+    private static Command prepareFindCommand(String arguments) {
+        return new FindCommand(arguments);
     }
 
 }
