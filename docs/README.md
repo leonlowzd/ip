@@ -9,6 +9,7 @@ Duke supports 3 tasks types:
 3) Events (Will require a date), Date identifier: `/at`
 
 ###Feature Summary 
+
 | Feature  |Description |
 | ---------|------------|
 | ToDo | Creates a ToDo task| 
