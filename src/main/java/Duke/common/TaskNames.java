@@ -1,5 +1,8 @@
 package Duke.common;
 
+/**
+ * Dictionary for Tasks
+ */
 public class TaskNames {
 
     public static final String TODO = "todo";

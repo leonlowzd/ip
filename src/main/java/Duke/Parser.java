@@ -1,12 +1,25 @@
 package Duke;
 
-import Duke.commands.*;
+import Duke.commands.AddTaskCommand;
+import Duke.commands.DoneCommand;
+import Duke.commands.DeleteCommand;
+import Duke.commands.ByeCommand;
+import Duke.commands.ListCommand;
+import Duke.commands.FindCommand;
+import Duke.commands.InvalidCommand;
+import Duke.commands.Command;
 import Duke.exceptions.IllegalDate;
 import Duke.exceptions.IllegalDescription;
 import Duke.exceptions.IllegalIndex;
 
-import static Duke.UserInputExtractor.*;
-import static Duke.common.Messages.*;
+import static Duke.UserInputExtractor.getDate;
+import static Duke.UserInputExtractor.getDescription;
+import static Duke.UserInputExtractor.getIndexFromString;
+
+import static Duke.common.Messages.MESSAGE_DATE_ERROR;
+import static Duke.common.Messages.MESSAGE_DESCRIPTION_ERROR;
+import static Duke.common.Messages.MESSAGE_INVALID_COMMAND_ERROR;
+import static Duke.common.Messages.MESSAGE_INDEX_ERROR;
 import static Duke.common.TaskNames.DEADLINE_DATE_IDENTIFIER;
 import static Duke.common.TaskNames.EVENT_DATE_IDENTIFIER;
 
@@ -19,6 +32,7 @@ public class Parser {
 
     /**
      * Parses user input into taskCategory for execution.
+     *
      * @param userInput full user input string
      * @return the command based on the user input
      */
@@ -28,9 +42,9 @@ public class Parser {
         final String arguments = userInput.replaceFirst(commandWord, "").trim();
 
         switch (commandWord) {
-        case AddTask.COMMAND_WORD_TODO:
-        case AddTask.COMMAND_WORD_DEADLINE:
-        case AddTask.COMMAND_WORD_EVENT:
+        case AddTaskCommand.COMMAND_WORD_TODO:
+        case AddTaskCommand.COMMAND_WORD_DEADLINE:
+        case AddTaskCommand.COMMAND_WORD_EVENT:
             return prepareAddCommand(arguments, commandWord);
         case DoneCommand.COMMAND_WORD:
             return prepareDoneCommand(arguments);
@@ -81,10 +95,10 @@ public class Parser {
         String description;
         String date;
         try {
-            if (commandWord.equals(AddTask.COMMAND_WORD_DEADLINE)) {
+            if (commandWord.equals(AddTaskCommand.COMMAND_WORD_DEADLINE)) {
                 date = getDate(arguments, DEADLINE_DATE_IDENTIFIER);
 
-            } else if (commandWord.equals(AddTask.COMMAND_WORD_EVENT)) {
+            } else if (commandWord.equals(AddTaskCommand.COMMAND_WORD_EVENT)) {
                 date = getDate(arguments, EVENT_DATE_IDENTIFIER);
 
             } else {
@@ -92,7 +106,7 @@ public class Parser {
             }
             description = getDescription(commandWord, arguments);
             if (description.isEmpty()) throw new IllegalDescription();
-            return new AddTask(commandWord, description, date, true);
+            return new AddTaskCommand(commandWord, description, date, true);
 
         } catch (IllegalDate | StringIndexOutOfBoundsException e) {
             return new InvalidCommand(MESSAGE_DATE_ERROR);

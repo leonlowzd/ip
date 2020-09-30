@@ -3,15 +3,23 @@ package Duke.ui;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
+
 import Duke.data.task.Task;
-import static Duke.common.Messages.*;
+
+import static Duke.common.Messages.MESSAGE_WELCOME;
+import static Duke.common.Messages.MESSAGE_GOODBYE;
+import static Duke.common.Messages.MESSAGE_SHOW_LIST;
+import static Duke.common.Messages.MESSAGE_ADD_NEW_TASK;
+import static Duke.common.Messages.MESSAGE_REMOVED_TASK;
+import static Duke.common.Messages.MESSAGE_MARKED_AS_DONE;
+import static Duke.common.Messages.MESSAGE_INDEX_ERROR;
 
 public class TextUi {
 
     private static final String DIVIDER = "____________________________________________________________";
 
-    private static final String COMMENT_LINE_FORMAT_REGEX = "#.\\*";
     private static final String COMMENT_LINE_ESCAPE_CHAR = "\\\\";
+    private static final String COMMENT_LINE_ASTERISK = "\\*";
     private final Scanner in;
     private final PrintStream out;
 
@@ -28,15 +36,12 @@ public class TextUi {
     }
 
     private boolean removeEmptyLines(String rawInputLine) {
-        return rawInputLine.trim().isEmpty() || isCommentLine(rawInputLine) || isEscapeKey(rawInputLine);
+        return rawInputLine.trim().isEmpty() || isSpecialCharacters(rawInputLine);
     }
 
-    private boolean isCommentLine(String rawInputLine) {
-        return rawInputLine.trim().matches(COMMENT_LINE_FORMAT_REGEX);
-    }
-
-    private boolean isEscapeKey(String rawInputLine) {
-        return rawInputLine.trim().matches(COMMENT_LINE_ESCAPE_CHAR);
+    private boolean isSpecialCharacters(String rawInputLine) {
+        return rawInputLine.trim().matches(COMMENT_LINE_ESCAPE_CHAR)
+                || rawInputLine.trim().matches(COMMENT_LINE_ASTERISK);
     }
 
     /**
@@ -76,7 +81,8 @@ public class TextUi {
 
     /**
      * Prints created Task
-     * @param task newly created task
+     *
+     * @param task          newly created task
      * @param numberOfTasks total number of tasks in the list
      */
     public void printCreatedTask(Task task, int numberOfTasks) {
@@ -86,7 +92,8 @@ public class TextUi {
 
     /**
      * Prints Deleted task
-     * @param task task to be deleted
+     *
+     * @param task          task to be deleted
      * @param numberOfTasks total number of tasks in the list
      */
     public void printDeleteTaskMessage(Task task, int numberOfTasks) {
@@ -96,6 +103,7 @@ public class TextUi {
 
     /**
      * Prints Completed task
+     *
      * @param task task marked as completed
      */
     public void printTaskAsDoneMessage(Task task) {
@@ -111,6 +119,7 @@ public class TextUi {
 
     /**
      * Prints Custom Error Message
+     *
      * @param error Error message to print
      */
     public void printCustomError(String error) {

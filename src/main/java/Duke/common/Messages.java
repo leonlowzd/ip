@@ -1,7 +1,7 @@
 package Duke.common;
 
 /**
- * Diciontary for user visible messages.
+ * Dictionary for Duke's messages
  */
 public class Messages {
 
@@ -20,5 +20,4 @@ public class Messages {
             "☹ OOPS!!! Illegal date format!!";
     public static final String MESSAGE_DESCRIPTION_ERROR =
             "☹ OOPS!!! Illegal description";
-
 }
