@@ -9,18 +9,18 @@ Duke supports 3 tasks types:
 3) Events (Will require a date), Date identifier: `/at`
 
 ###Feature Summary 
-| Feature  |Description 
-| ---------|------------
-| ToDo | Creates a ToDo task 
-| Deadline | Creates a Deadline task 
-| Event | Creates a Event  task
-| List | List out all of the tasks 
-| Done | Marks specific task as done
-| Delete | Deletes tasks from the list
-| Find | Find keyword in task list
-| Bye | Exits the program 
-| Save (Write) | Automatically saves all tasks into a text file at `~/Documents` whenever a new Task is added
-| save (Read) | At start of the program, Duke will load saved Tasks from `~/Documents` 
+| Feature  |Description |
+| ---------|------------|
+| ToDo | Creates a ToDo task| 
+| Deadline | Creates a Deadline task| 
+| Event | Creates a Event  task|
+| List | List out all of the tasks| 
+| Done | Marks specific task as done|
+| Delete | Deletes tasks from the list|
+| Find | Find keyword in task list|
+| Bye | Exits the program|
+| Save (Write) | Automatically saves all tasks into a text file at `~/Documents` whenever a new Task is added|
+| save (Read) | At start of the program, Duke will load saved Tasks from `~/Documents`|
 
 ## Usage
 
@@ -30,11 +30,11 @@ Command is **CASE SENSITIVE**
 | ---------| ------ | ------- |
 | ToDo |`todo TASK_DESCRIPTION` | `todo Send email to prof ` |
 | Deadline | `deadline TASK_DESCRIPTION /by DATE` | `deadline CS2113 IP /by 10-2 before tutorial`|
-| Event | `event TASK_DESCRIPTION /at DATE` | `event CS2113 tutorial Essay /at 10-2 1300` |
+| Event | `event TASK_DESCRIPTION /at DATE` | `event CS2113 tutorial /at 10-2 1300` |
 | List |`list` | `list` |
 | Done |`done INDEX`| `done 1` |
 | Delete | `delete INDEX` | `delete 1` |
-| Find |`find KEYWORD` | `find Essay` |
+| Find |`find KEYWORD` | `find tutorial` |
 | Bye |`bye` | `bye` |
 
 ## Error Messages
