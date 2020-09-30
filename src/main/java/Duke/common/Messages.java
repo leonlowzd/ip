@@ -19,5 +19,5 @@ public class Messages {
     public static final String MESSAGE_DATE_ERROR =
             "☹ OOPS!!! Illegal date format!!";
     public static final String MESSAGE_DESCRIPTION_ERROR =
-            "☹ OOPS!!! Illegal description";
+            "☹ OOPS!!! Empty description";
 }
