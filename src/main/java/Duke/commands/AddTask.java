@@ -1,6 +1,5 @@
 package Duke.commands;
 
-import Duke.exceptions.IllegalDescription;
 import Duke.data.task.Deadline;
 import Duke.data.task.Event;
 import Duke.data.task.ToDo;

@@ -10,10 +10,18 @@ import static Duke.common.Messages.*;
 import static Duke.common.TaskNames.DEADLINE_DATE_IDENTIFIER;
 import static Duke.common.TaskNames.EVENT_DATE_IDENTIFIER;
 
+/**
+ * Parses User Input into command
+ */
 public class Parser {
     public Parser() {
     }
 
+    /**
+     * Parses user input into taskCategory for execution.
+     * @param userInput full user input string
+     * @return the command based on the user input
+     */
     public static Command parseCommand(String userInput) {
         String[] words = userInput.trim().split(" ", 2);
         final String commandWord = words[0];

@@ -3,6 +3,9 @@ package Duke;
 import Duke.commands.*;
 import Duke.exceptions.IllegalDate;
 
+/**
+ * Extracts user arguments to Strings
+ */
 public class UserInputExtractor extends Parser {
     public UserInputExtractor() {
     }
