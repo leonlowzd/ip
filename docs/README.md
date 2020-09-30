@@ -8,7 +8,7 @@ Duke supports 3 tasks types:
 2) Deadlines (Will require a date), Date identifier: `/by`
 3) Events (Will require a date), Date identifier: `/at`
 
-### Feature Summary 
+**Here is the full feature list of Duke:**
 
 | Feature  |Description |
 | ---------|------------|
