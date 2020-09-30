@@ -1,15 +1,18 @@
 package Duke;
 
-import Duke.commands.*;
+import Duke.commands.AddTaskCommand;
 import Duke.exceptions.IllegalDate;
 
+/**
+ * Extracts user arguments to Strings
+ */
 public class UserInputExtractor extends Parser {
     public UserInputExtractor() {
     }
 
     protected static String getDescription(String typeOfTask, String arguments) {
         String description;
-        if (typeOfTask.equals(AddTask.COMMAND_WORD_TODO)) description = arguments;
+        if (typeOfTask.equals(AddTaskCommand.COMMAND_WORD_TODO)) description = arguments;
         else {
             description = arguments.substring(0, arguments.lastIndexOf("/")).trim();
         }
@@ -28,6 +31,7 @@ public class UserInputExtractor extends Parser {
         int index;
         try {
             index = Integer.parseInt(arguments.trim()) - 1;
+
         } catch (RuntimeException e) {
             index = -1;
         }

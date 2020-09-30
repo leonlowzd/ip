@@ -1,4 +1,7 @@
 package Duke.exceptions;
 
-public class IllegalDate extends Exception{
+/**
+ * Signals that an invalid date/date identifier is inputted
+ */
+public class IllegalDate extends Exception {
 }
