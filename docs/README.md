@@ -4,11 +4,11 @@ Duke is a Java application that is a Personal Assistant Chat bot that helps mana
 ## Features 
 
 Duke supports 3 tasks types:
-1) Todo
-2) Deadlines (Will require a date), Date identifier: `/by`
-3) Events (Will require a date), Date identifier: `/at`
+1. Todo
+2. Deadlines (Will require a date), Date identifier: `/by`
+3. Events (Will require a date), Date identifier: `/at`
 
-**Here is the full feature list of Duke:**
+### **Here is the full feature list of Duke:**
 
 | Feature  |Description |
 | ---------|------------|
@@ -20,8 +20,14 @@ Duke supports 3 tasks types:
 | Delete | Deletes tasks from the list|
 | Find | Find keyword in task list|
 | Bye | Exits the program|
-| Save (Write) | Automatically saves all tasks into a text file at `~/Documents` whenever a new Task is added|
-| save (Read) | At start of the program, Duke will load saved Tasks from `~/Documents`|
+
+
+### **Back End Features:**
+#### Save (Write) 
+Automatically saves all tasks into a text file at `~/Documents` whenever a new Task is added
+#### save (Read) 
+At start of the program, Duke will load saved Tasks from `~/Documents`
+Duke will ensure that text file is not corrupted and is at the correct format 
 
 ## Usage
 
@@ -42,9 +48,18 @@ Command is **CASE SENSITIVE**
 
 Duke is intelligent enough to handle most of the user input errors, the table below highlights the error messages and shows what they mean:
 
+### Command Errors
 | Message | Description |
 | --------|-------------|
 |`OOPS!!! I'm sorry, but I don't know what that means :-(` | An invalid Command is inputted, check case sensitivity |
 |`OOPS!!! Illegal index, it does not exist in the list` | Specifically for `done` and `delete` command; Index inputted is: Out of the list or not an `int` character
 |`OOPS!!! Illegal date format!!`| Specifically for `Event` and `Deadline` command; Either date is empty or wrong date identifier is used
 | `OOPS!!! Empty description`| Task description is empty
+
+### File Errors
+
+| Message | Description |
+| --------|-------------|
+|`Unable to write file to text file.` | File directory cannot be found | 
+|`Unable to open file from memory.`| File cannot be read from memory, task list will be resetted |
+|`Text file is corrupted. Some of the pre-existing tasks might not be loaded.`| File is corrupted with invalid inputs |
