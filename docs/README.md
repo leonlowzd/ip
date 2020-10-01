@@ -5,8 +5,10 @@ Duke is a Java application that is a Personal Assistant Chat bot that helps mana
 
 Duke supports 3 tasks types:
 1. Todo
-2. Deadlines (Will require a date), Date identifier: `/by`
-3. Events (Will require a date), Date identifier: `/at`
+2. Deadlines
+3. Events
+
+Deadlines and Events will require a date. Duke will convert date to Day-Month-Year format (for example: 02 October 2020) if user inputs in YYYY-MM-DD format, else the date will be recorded as per user input
 
 ### **Here is the full feature list of Duke:**
 
@@ -36,8 +38,8 @@ Command is **CASE SENSITIVE**
 | Feature  | Usage | Example |
 | ---------| ------ | ------- |
 | ToDo |`todo TASK_DESCRIPTION` | `todo Send email to prof ` |
-| Deadline | `deadline TASK_DESCRIPTION /by DATE` | `deadline CS2113 IP /by 10-2 before tutorial`|
-| Event | `event TASK_DESCRIPTION /at DATE` | `event CS2113 tutorial /at 10-2 1300` |
+| Deadline | `deadline TASK_DESCRIPTION /by DATE` | `deadline CS2113 IP /by 10-2 before tutorial`  `event CS2113 IP /by 2020-10-2`|
+| Event | `event TASK_DESCRIPTION /at DATE` | `event CS2113 tutorial /at 10-2 1300` or `event CS2113 tutorial /at 2020-10-2`|
 | List |`list` | `list` |
 | Done |`done INDEX`| `done 1` |
 | Delete | `delete INDEX` | `delete 1` |
