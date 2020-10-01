@@ -2,15 +2,19 @@ package Duke.data;
 
 import Duke.commands.AddTaskCommand;
 import Duke.data.task.Task;
+import Duke.exceptions.FileCorrupted;
+import Duke.exceptions.IllegalDate;
+import Duke.exceptions.IllegalDescription;
+import Duke.exceptions.IllegalType;
 import Duke.ui.TextUi;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner; // Import the Scanner class to read text file
+import java.util.Scanner;
 
 import static Duke.common.TaskNames.TODO;
 import static Duke.common.TaskNames.EVENT;
@@ -78,29 +82,39 @@ public class Storage {
             convertTextToTask(myReader);
             myReader.close();
         } catch (FileNotFoundException e) {
-            ui.printCustomError("Unable to read file from memory.");
+            ui.printCustomError("Unable to open file from memory.");
+        } catch (FileCorrupted e) {
+            ui.printCustomError("Text file is corrupted. Some of the pre-existing tasks might not be loaded.");
         }
 
     }
 
-    private void convertTextToTask(Scanner myReader) {
-        while (myReader.hasNextLine()) {
-            String data = myReader.nextLine();
-            String[] list = data.split("\\|");
-            String type = extractTaskType(list[0]);
-            boolean status = extractDoneStatus(list[1].trim());
-            String description = list[2].trim();
-            String date = "";
-            if (!(type.equals(TODO))) date = list[2].trim();
-
-            AddTaskCommand add = new AddTaskCommand(type, description, date, false);
-            add.setData(tasks);
-            add.run();
-            if (status) {
-                tasks.getTask(tasks.getNumberOfTasksInList() - 1).markAsDone();
+    private void convertTextToTask(Scanner myReader) throws FileCorrupted {
+        try {
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                String[] list = data.split("\\|");
+                String type = extractTaskType(list[0]);
+                boolean status = extractDoneStatus(list[1].trim());
+                String description = list[2].trim();
+                String date = "";
+                if (!(type.equals(TODO))) {
+                    date = list[3].trim();
+                }
+                if (description.isEmpty() || date.isEmpty()&&(!type.equals(TODO))) {
+                    throw new FileCorrupted();
+                }
+                AddTaskCommand add = new AddTaskCommand(type, description, date, false);
+                add.setData(tasks);
+                add.run();
+                if (status) {
+                    tasks.getTask(tasks.getNumberOfTasksInList() - 1).markAsDone();
+                }
             }
-
+        } catch (FileCorrupted fileCorrupted) {
+            throw new FileCorrupted();
         }
+
     }
 
     private boolean extractDoneStatus(String status) {
@@ -109,14 +123,16 @@ public class Storage {
         return isFinished;
     }
 
-    private String extractTaskType(String type) {
+    private String extractTaskType(String type) throws FileCorrupted {
         String taskType;
         if (type.contains("E")) {
             taskType = EVENT;
         } else if (type.contains("T")) {
             taskType = TODO;
-        } else {
+        } else if (type.contains("D")){
             taskType = DEADLINE;
+        } else {
+            throw new FileCorrupted();
         }
         return taskType;
     }
