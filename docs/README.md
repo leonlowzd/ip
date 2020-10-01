@@ -1,5 +1,12 @@
 # Duke User Guide
 Duke is a Java application that is a Personal Assistant Chat bot that helps manage users with their tasks.
+```
+____________________________________________________________ 
+Hello! I'm Duke
+What can I do for you?
+
+____________________________________________________________ 
+```
 
 ## Features 
 
@@ -12,28 +19,112 @@ Deadlines and Events will require a date. Duke will convert date to Day-Month-Ye
 
 ### **Here is the full feature list of Duke:**
 
-| Feature  |Description |
-| ---------|------------|
-| ToDo | Creates a ToDo task| 
-| Deadline | Creates a Deadline task| 
-| Event | Creates a Event  task|
-| List | List out all of the tasks| 
-| Done | Marks specific task as done|
-| Delete | Deletes tasks from the list|
-| Find | Find keyword in task list|
-| Bye | Exits the program|
+### **Command Features:**
+#### ToDo: `todo`
+Creates a todo task and adds it to the list
 
+**Sample printout:**
+```
+todo print assignment
+____________________________________________________________
+Nice, I've added the following task to the list
+[T][✘] print assignment
+Now you have 1 in the list.
 
+____________________________________________________________
+```
+#### Deadline: `deadline`
+Creates a Deadline task and adds it to the list
+
+**Sample printout:**
+```
+deadline CS2113 assignment /by 2020-10-02
+____________________________________________________________
+Nice, I've added the following task to the list
+[D][✘] CS2113 assignment (by: 02 October 2020)
+Now you have 2 in the list.
+
+____________________________________________________________
+```
+#### Event: `event`
+Creates an Event task and adds it to the list
+
+**Sample printout:**
+```
+event family dinner /at This thursday 7:00pm
+____________________________________________________________
+Nice, I've added the following task to the list
+[E][✘] family dinner (at: This thursday 7:00pm)
+Now you have 3 in the list.
+
+____________________________________________________________
+```
+#### List: `list`
+List out all the tasks in the list
+**Sample printout:**
+```
+list
+____________________________________________________________
+Here are the tasks in your list:
+1. [T][✘] print assignment
+2. [D][✘] CS2113 assignment (by: 02 October 2020)
+3. [E][✘] family dinner (at: This thursday 7:00pm)
+
+____________________________________________________________
+```
+#### Done: `done`
+Marks a specific task as done
+
+**Sample printout:**
+```
+done 1
+____________________________________________________________
+Nice! I've marked this task as done: 
+[T][✓] print assignment
+____________________________________________________________
+```
+#### Delete: `delete`
+Deletes a specific task from the list
+**Sample printout:**
+```
+delete 2
+____________________________________________________________
+Noted. I've removed this task: 
+[D][✘] CS2113 assignment (by: 02 October 2020)
+Now you have 2 in the list.
+```
+____________________________________________________________
+### Find: `find`
+Find keyword in task list
+**Sample printout:**
+```
+find family
+____________________________________________________________
+Here are the tasks in your list:
+1. [E][✘] family dinner (at: This thursday 7:00pm)
+
+____________________________________________________________
+```
+### Bye: `bye`
+Exits the program
+**Sample printout:**
+```
+bye
+____________________________________________________________
+Good bye!
+____________________________________________________________
+```
 ### **Back End Features:**
 #### Save (Write) 
 Automatically saves all tasks into a text file at `~/Documents` whenever a new Task is added
-#### save (Read) 
-At start of the program, Duke will load saved Tasks from `~/Documents`
+#### Save (Read) 
+At start of the program, Duke will load saved Tasks from `~/Documents`,
 Duke will ensure that text file is not corrupted and is at the correct format 
 
 ## Usage
 
 Command is **CASE SENSITIVE**
+
 
 | Feature  | Usage | Example |
 | ---------| ------ | ------- |
