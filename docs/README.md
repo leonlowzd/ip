@@ -49,12 +49,13 @@ Command is **CASE SENSITIVE**
 Duke is intelligent enough to handle most of the user input errors, the table below highlights the error messages and shows what they mean:
 
 ### Command Errors
+
 | Message | Description |
 | --------|-------------|
 |`OOPS!!! I'm sorry, but I don't know what that means :-(` | An invalid Command is inputted, check case sensitivity |
-|`OOPS!!! Illegal index, it does not exist in the list` | Specifically for `done` and `delete` command; Index inputted is: Out of the list or not an `int` character
-|`OOPS!!! Illegal date format!!`| Specifically for `Event` and `Deadline` command; Either date is empty or wrong date identifier is used
-| `OOPS!!! Empty description`| Task description is empty
+|`OOPS!!! Illegal index, it does not exist in the list` | Specifically for `done` and `delete` command; Index inputted is: Out of the list or not an `int` character|
+|`OOPS!!! Illegal date format!!`| Specifically for `Event` and `Deadline` command; Either date is empty or wrong date identifier is used|
+| `OOPS!!! Empty description`| Task description is empty|
 
 ### File Errors
 
