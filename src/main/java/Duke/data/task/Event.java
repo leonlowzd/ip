@@ -1,5 +1,9 @@
 package Duke.data.task;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import static Duke.common.TaskNames.EVENT_DISPLAY;
 
 public class Event extends Task {
@@ -31,7 +35,15 @@ public class Event extends Task {
     }
 
     private String setPrintDate() {
-        return " (at: "+getDate()+")";
+        String tempDate = getDate();
+        try {
+            LocalDate localDate = LocalDate.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+            tempDate = localDate.format(formatter);
+        } catch (DateTimeParseException e) {
+            this.date = tempDate;
+        }
+        return " (at: "+tempDate+")";
     }
 
     public String toString() {
