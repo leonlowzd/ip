@@ -24,6 +24,7 @@ Deadlines and Events will require a date. Duke will convert date to Day-Month-Ye
 Creates a todo task and adds it to the list
 
 **Sample printout:**
+
 ```
 todo print assignment
 ____________________________________________________________
@@ -37,6 +38,7 @@ ____________________________________________________________
 Creates a Deadline task and adds it to the list
 
 **Sample printout:**
+
 ```
 deadline CS2113 assignment /by 2020-10-02
 ____________________________________________________________
@@ -50,6 +52,7 @@ ____________________________________________________________
 Creates an Event task and adds it to the list
 
 **Sample printout:**
+
 ```
 event family dinner /at This thursday 7:00pm
 ____________________________________________________________
@@ -61,7 +64,9 @@ ____________________________________________________________
 ```
 #### List: `list`
 List out all the tasks in the list
+
 **Sample printout:**
+
 ```
 list
 ____________________________________________________________
@@ -76,6 +81,7 @@ ____________________________________________________________
 Marks a specific task as done
 
 **Sample printout:**
+
 ```
 done 1
 ____________________________________________________________
@@ -85,7 +91,9 @@ ____________________________________________________________
 ```
 #### Delete: `delete`
 Deletes a specific task from the list
+
 **Sample printout:**
+
 ```
 delete 2
 ____________________________________________________________
@@ -96,7 +104,9 @@ Now you have 2 in the list.
 ____________________________________________________________
 ### Find: `find`
 Find keyword in task list
+
 **Sample printout:**
+
 ```
 find family
 ____________________________________________________________
@@ -107,7 +117,9 @@ ____________________________________________________________
 ```
 ### Bye: `bye`
 Exits the program
+
 **Sample printout:**
+
 ```
 bye
 ____________________________________________________________
