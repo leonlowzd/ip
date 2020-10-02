@@ -17,6 +17,7 @@ import static Duke.UserInputExtractor.getDescription;
 import static Duke.UserInputExtractor.getIndexFromString;
 
 import static Duke.common.Messages.MESSAGE_DATE_ERROR;
+import static Duke.common.Messages.MESSAGE_DATE_EMPTY;
 import static Duke.common.Messages.MESSAGE_DESCRIPTION_ERROR;
 import static Duke.common.Messages.MESSAGE_INVALID_COMMAND_ERROR;
 import static Duke.common.Messages.MESSAGE_INDEX_ERROR;
@@ -69,6 +70,7 @@ public class Parser {
 
         } catch (IllegalIndex e) {
             return new InvalidCommand(MESSAGE_INDEX_ERROR);
+
         }
     }
 
@@ -80,6 +82,7 @@ public class Parser {
 
         } catch (IllegalIndex e) {
             return new InvalidCommand(MESSAGE_INDEX_ERROR);
+
         }
     }
 
@@ -108,7 +111,10 @@ public class Parser {
             if (description.isEmpty()) throw new IllegalDescription();
             return new AddTaskCommand(commandWord, description, date, true);
 
-        } catch (IllegalDate | StringIndexOutOfBoundsException e) {
+        } catch (IllegalDate e) {
+            return new InvalidCommand(MESSAGE_DATE_EMPTY);
+
+        } catch (StringIndexOutOfBoundsException e) {
             return new InvalidCommand(MESSAGE_DATE_ERROR);
 
         } catch (IllegalDescription e) {

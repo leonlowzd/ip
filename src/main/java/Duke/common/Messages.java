@@ -17,7 +17,9 @@ public class Messages {
     public static final String MESSAGE_INDEX_ERROR =
             "☹ OOPS!!! Illegal index, it does not exist in the list";
     public static final String MESSAGE_DATE_ERROR =
-            "☹ OOPS!!! Illegal date format!!";
+            "☹ OOPS!!! Illegal date format!! /at for events and /by for deadlines";
+    public static final String MESSAGE_DATE_EMPTY =
+            "☹ OOPS!!! Empty date";
     public static final String MESSAGE_DESCRIPTION_ERROR =
             "☹ OOPS!!! Empty description";
 }

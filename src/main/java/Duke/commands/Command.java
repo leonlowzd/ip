@@ -7,11 +7,13 @@ import Duke.ui.TextUi;
  * Abstract class for Duke's Commands
  */
 abstract public class Command {
-    protected TaskList tasks;
     protected static TextUi ui = new TextUi();
+    protected TaskList tasks;
+
     protected Command() {
 
     }
+
     /**
      * Sets the entire TaskList to the Command Class
      */
