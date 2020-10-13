@@ -3,9 +3,6 @@ package Duke.data;
 import Duke.commands.AddTaskCommand;
 import Duke.data.task.Task;
 import Duke.exceptions.FileCorrupted;
-import Duke.exceptions.IllegalDate;
-import Duke.exceptions.IllegalDescription;
-import Duke.exceptions.IllegalType;
 import Duke.ui.TextUi;
 
 import java.io.BufferedWriter;
@@ -16,11 +13,13 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static Duke.common.TaskNames.TODO;
-import static Duke.common.TaskNames.EVENT;
-import static Duke.common.TaskNames.DEADLINE;
+import static Duke.common.Messages.*;
+import static Duke.common.TaskNames.*;
 
-
+/**
+ * Class handling the reading and writing of existing task into/out to a text file.
+ *
+ */
 public class Storage {
     private static final String TEXT_DIVIDER = " | ";
     private static TextUi ui = new TextUi();
@@ -38,22 +37,22 @@ public class Storage {
     public void writeFile(String homeDirectory) {
         try {
             File file = new File(homeDirectory);
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
+            FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             // Write in file
-            StringBuilder sb = convertListToTextFormat(this.tasks);
-            bw.write(sb.toString());
+            StringBuilder stringBuilder = convertListToTextFormat(this.tasks);
+            bufferedWriter.write(stringBuilder.toString());
             // Close connection
-            bw.close();
+            bufferedWriter.close();
         } catch (IOException e) {
-            ui.printCustomError("Unable to write file to text file.");
+            ui.printCustomError(MESSAGE_UNABLE_TO_WRITE_FILE);
         }
 
     }
 
     private StringBuilder convertListToTextFormat(TaskList taskList) {
         ArrayList<Task> tasks = taskList.getAllTasks();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         for (Task task : tasks) {
             String type = task.getTaskType().replace("[", "").replace("]", "") + TEXT_DIVIDER;
             String doneStatus = task.getStatus() + TEXT_DIVIDER;
@@ -62,9 +61,9 @@ public class Storage {
             if (!(type.equals("T | "))) {
                 date = TEXT_DIVIDER + task.getDate();
             }
-            sb.append(type).append(doneStatus).append(description).append(date).append("\n");
+            stringBuilder.append(type).append(doneStatus).append(description).append(date).append("\n");
         }
-        return sb;
+        return stringBuilder;
     }
 
     /**
@@ -82,9 +81,9 @@ public class Storage {
             convertTextToTask(myReader);
             myReader.close();
         } catch (FileNotFoundException e) {
-            ui.printCustomError("Unable to open file from memory.");
+            ui.printCustomError(MESSAGE_UNABLE_TO_OPEN_FILE);
         } catch (FileCorrupted e) {
-            ui.printCustomError("Text file is corrupted. Some of the pre-existing tasks might not be loaded.");
+            ui.printCustomError(MESSAGE_FILE_CORRUPTED);
         }
 
     }
@@ -125,11 +124,11 @@ public class Storage {
 
     private String extractTaskType(String type) throws FileCorrupted {
         String taskType;
-        if (type.contains("E")) {
+        if (type.contains(EVENT_DISPLAY)) {
             taskType = EVENT;
-        } else if (type.contains("T")) {
+        } else if (type.contains(TODO_DISPLAY)) {
             taskType = TODO;
-        } else if (type.contains("D")){
+        } else if (type.contains(DEADLINE_DISPLAY)){
             taskType = DEADLINE;
         } else {
             throw new FileCorrupted();

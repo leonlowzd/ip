@@ -4,7 +4,7 @@ import Duke.commands.AddTaskCommand;
 import Duke.exceptions.IllegalDate;
 
 /**
- * Extracts user arguments to Strings
+ * Class that handles extraction of user arguments to Strings
  */
 public class UserInputExtractor extends Parser {
     public UserInputExtractor() {

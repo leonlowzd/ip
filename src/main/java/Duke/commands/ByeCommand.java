@@ -11,9 +11,13 @@ public class ByeCommand extends Command {
      * Sets the isExit flag to true if there an instance of ByeCommand
      */
     public static boolean isExit(Command command) {
-        return command instanceof ByeCommand; // instanceof returns false if it is null
+        // instanceof returns false if it is null
+        return command instanceof ByeCommand;
     }
 
+    /**
+     * Runs the ByeCommand
+     */
     @Override
     public void run() {
 

@@ -29,7 +29,6 @@ public class Duke {
         Duke.run();
     }
 
-
     private static void run() {
         start();
         runCommandLoop();

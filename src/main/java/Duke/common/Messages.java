@@ -22,4 +22,8 @@ public class Messages {
             "☹ OOPS!!! Empty date";
     public static final String MESSAGE_DESCRIPTION_ERROR =
             "☹ OOPS!!! Empty description";
+    public static final String MESSAGE_UNABLE_TO_WRITE_FILE = "Unable to write file to text file.";
+    public static final String MESSAGE_UNABLE_TO_OPEN_FILE = "Unable to open file from memory.";
+    public static final String MESSAGE_FILE_CORRUPTED =
+            "Text file is corrupted. Some of the pre-existing tasks might not be loaded.";
 }

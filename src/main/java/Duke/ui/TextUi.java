@@ -14,6 +14,9 @@ import static Duke.common.Messages.MESSAGE_REMOVED_TASK;
 import static Duke.common.Messages.MESSAGE_MARKED_AS_DONE;
 import static Duke.common.Messages.MESSAGE_INDEX_ERROR;
 
+/**
+ * Class representing the UI of Duke.
+ */
 public class TextUi {
 
     private static final String DIVIDER = "____________________________________________________________";
@@ -24,7 +27,7 @@ public class TextUi {
     private final PrintStream out;
 
     /**
-     * Handles the input and output of the program
+     * Handles the input and output of the program.
      */
     public TextUi() {
         this(System.in, System.out);
@@ -45,7 +48,7 @@ public class TextUi {
     }
 
     /**
-     * Retrieve User Input, incorrect command will be rejected
+     * Retrieve User Input, incorrect command will be rejected.
      */
     public String getUserCommand() {
         String fullInputLine = in.nextLine();
@@ -56,7 +59,7 @@ public class TextUi {
     }
 
     /**
-     * Prints Welcome Message
+     * Prints Welcome Message.
      */
     public void printWelcomeMessage() {
         printOut(
@@ -66,24 +69,24 @@ public class TextUi {
     }
 
     /**
-     * Prints Exit Message
+     * Prints Exit Message.
      */
     public void printGoodbyeMessage() {
         printOut(DIVIDER, MESSAGE_GOODBYE, DIVIDER);
     }
 
     /**
-     * Prints the list of all of the tasks
+     * Prints the list of all of the tasks.
      */
     public void printTaskListView(String toPrint) {
         printOut(DIVIDER, MESSAGE_SHOW_LIST, toPrint, DIVIDER);
     }
 
     /**
-     * Prints created Task
+     * Prints created Task.
      *
-     * @param task          newly created task
-     * @param numberOfTasks total number of tasks in the list
+     * @param task          newly created task.
+     * @param numberOfTasks total number of tasks in the list.
      */
     public void printCreatedTask(Task task, int numberOfTasks) {
         String numberOfTaskMessage = "Now you have " + numberOfTasks + " in the list.\n";
@@ -91,10 +94,10 @@ public class TextUi {
     }
 
     /**
-     * Prints Deleted task
+     * Prints Deleted task.
      *
-     * @param task          task to be deleted
-     * @param numberOfTasks total number of tasks in the list
+     * @param task          task to be deleted.
+     * @param numberOfTasks total number of tasks in the list.
      */
     public void printDeleteTaskMessage(Task task, int numberOfTasks) {
         String numberOfTaskMessage = "Now you have " + numberOfTasks + " in the list.\n";
@@ -102,25 +105,25 @@ public class TextUi {
     }
 
     /**
-     * Prints Completed task
+     * Prints Completed task.
      *
-     * @param task task marked as completed
+     * @param task task marked as completed.
      */
     public void printTaskAsDoneMessage(Task task) {
         printOut(DIVIDER, MESSAGE_MARKED_AS_DONE, task.toString(), DIVIDER);
     }
 
     /**
-     * Prints Illegal Index Message
+     * Prints Illegal Index Message.
      */
     public void printIllegalIndexMessage() {
         printOut(DIVIDER, MESSAGE_INDEX_ERROR, DIVIDER);
     }
 
     /**
-     * Prints Custom Error Message
+     * Prints Custom Error Message.
      *
-     * @param error Error message to print
+     * @param error Error message to print.
      */
     public void printCustomError(String error) {
         printOut(DIVIDER, error, DIVIDER);

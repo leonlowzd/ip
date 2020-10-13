@@ -47,16 +47,22 @@ public class Parser {
         case AddTaskCommand.COMMAND_WORD_DEADLINE:
         case AddTaskCommand.COMMAND_WORD_EVENT:
             return prepareAddCommand(arguments, commandWord);
+
         case DoneCommand.COMMAND_WORD:
             return prepareDoneCommand(arguments);
+
         case DeleteCommand.COMMAND_WORD:
             return prepareDeleteCommand(arguments);
+
         case ByeCommand.COMMAND_WORD:
             return prepareByeCommand();
+
         case ListCommand.COMMAND_WORD:
             return prepareListCommand();
+
         case FindCommand.COMMAND_WORD:
             return prepareFindCommand(arguments);
+
         default:
             return new InvalidCommand(MESSAGE_INVALID_COMMAND_ERROR);
         }

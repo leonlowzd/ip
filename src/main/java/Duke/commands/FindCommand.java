@@ -24,17 +24,17 @@ public class FindCommand extends Command {
      */
     @Override
     public void run() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         int index = 0;
         for (Task task : tasks.getAllTasks()) {
             if (task.getDescription().contains(this.keyword)) {
-                sb.append(index + 1);
-                sb.append(". ");
-                sb.append(task);
-                sb.append("\n");
+                stringBuilder.append(index + 1);
+                stringBuilder.append(". ");
+                stringBuilder.append(task);
+                stringBuilder.append("\n");
                 index++;
             }
         }
-        ui.printTaskListView(sb.toString());
+        ui.printTaskListView(stringBuilder.toString());
     }
 }
